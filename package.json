@@ -1,0 +1,23 @@
+{
+  "name": "team5-back",
+  "version": "1.0.0",
+  "description": "!!\r 깃허브 작동확인용\r !!21312",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chi091/TEAM5-BACK.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chi091/TEAM5-BACK/issues"
+  },
+  "homepage": "https://github.com/chi091/TEAM5-BACK#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
