@@ -1,15 +1,20 @@
 const express = require('express')
-const app = express()
 const pool = require('./db').pool
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const {createToken} = require('./utils/jwt')
+const { Auth } = require('./middlewares/auth')
+const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true,}))
-
+app.use(cookieParser())
 app.use(cors({
     origin:true,
     credentials:true,
 }))
+app.use(Auth)
+
 
 app.post('/api/user/join',async (req,res)=>{
     console.log(req.body)
@@ -25,14 +30,11 @@ app.post('/api/user/join',async (req,res)=>{
             telephone,
             phonenumber,
             email,
-            introduce,
-            level,
-            active,
-            point
+            introduce
         ) values(
-            ?,?,?,?,?,?,?,?,?,?,?,1,1,0
+            ?,?,?,?,?,?,?,?,?,?,?
         )`
-    const prepare = [userid,userpw,profile_img,username,nickname,address,gender,telephone,phonenumber,email,introduce,level,active,point]
+    const prepare = [userid,userpw,profile_img,username,nickname,address,gender,telephone,phonenumber,email,introduce]
     
     try{
         const [result] = await pool.execute(sql,prepare) 
@@ -43,14 +45,15 @@ app.post('/api/user/join',async (req,res)=>{
             },
             errno:0,
         }
-        // res.setHeader('Set-cookie','name=ingoo; path=/; Domain=localhost;')
-        // res.cookie('name','',{
-        //     path:'/',
-        //     httpOnly:true,
-        //     secure:true,
-        //     domain:'localhost'
-        // })
+        res.setHeader('Set-cookie',`name=${nickname}; path=/; Domain=localhost;`)
+        res.cookie('name',`${nickname}`,{
+            path:'/',
+            httpOnly:true,
+            secure:true,
+            domain:'localhost'
+        })
         res.json(response) 
+        
     
         }catch(e){
         console.log(e.message)
@@ -68,7 +71,7 @@ app.post('/api/user/join',async (req,res)=>{
     
 
 
-app.post('/user/login',(req,res)=>{
+app.post('/api/user/login',(req,res)=>{
     const postman = req.body
     console.log(JSON.parse(postman))
 })
