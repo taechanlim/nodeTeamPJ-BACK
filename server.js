@@ -1,5 +1,5 @@
 const express = require('express')
-const pool = require('./db').pool
+const pool = require('./Database/db').pool
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const {createToken} = require('./utils/jwt')
