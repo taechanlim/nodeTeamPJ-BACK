@@ -129,6 +129,37 @@ app.post('/api/board/list', async (req,res)=>{
     res.json(response)
 })
 
+app.post('/api/board/write',async (req,res)=>{
+    const {cate_name,subject,content} = req.body
+    const {nickname} = req.user
+    
+    const sql = `INSERT INTO board(cate_name,subject,content,nickname) values(?,?,?,?)`
+    const prepare = [cate_name,subject,content,nickname]
+    
+    let response = {
+        result:[],
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql,prepare)
+        response = {
+            ...response,
+            result:{
+                affectedRows:result.affectedRows,
+                insertId:result.insertId
+            }
+        }
+        
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
+
+    res.json(response)
+})
+
 app.listen(4001,()=>{
     console.log('서버시작 4001')
 })
