@@ -107,7 +107,7 @@ app.post('/api/user/login',async (req,res)=>{
 })
 
 app.post('/api/board/list', async (req,res)=>{
-    const sql = `SELECT idx,cate_name,thumbnail,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit FROM board ORDER BY idx DESC`
+    const sql = `SELECT idx,cate_name,thumbnail,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
     
     let response = {
         errno:1
@@ -121,7 +121,7 @@ app.post('/api/board/list', async (req,res)=>{
             errno:0,
             result
         }
-        console.log(response)
+        
     }catch(e){
         console.log(e.message)
     }
