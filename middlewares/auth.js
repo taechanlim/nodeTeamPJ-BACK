@@ -3,8 +3,6 @@ const { createSignature } = require('../utils/jwt')
 exports.Auth = (req,res,next) => {
     try {
         const { token } = req.cookies
-        
-        if (token === undefined) throw new Error('토큰 오류')
         const [header,payload,sign] = token.split('.')    
         const signature = createSignature(header,payload)
 
