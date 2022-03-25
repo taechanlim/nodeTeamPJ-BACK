@@ -20,15 +20,15 @@ CREATE TABLE user(
 );
 
 CREATE TABLE board(
-    idx int auto_increment,
+    idx int auto_increment not null,
     cate_name varchar(20) not null,
     subject varchar(50) not null,
     content text not null,
     thumbnail varchar(30) null,
     img varchar(200) null,
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
-    hit int not null,
-    likes int not null,
+    hit int DEFAULT 0 not null,
+    likes int DEFAULT 0 not null,
     nickname varchar(15) null,
     PRIMARY KEY (idx,cate_name),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
