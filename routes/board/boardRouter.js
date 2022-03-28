@@ -6,7 +6,7 @@ router.post('/list',boardController.list);
 router.post('/write',boardController.write);
 router.post('/view',boardController.view);
 router.post('/update',boardController.update);
-// router.post('/delete',boardController.delete);
+router.post('/delete',boardController.delete);
 
 
 module.exports = router;
