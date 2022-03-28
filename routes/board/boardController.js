@@ -33,7 +33,10 @@ exports.write = async (req,res)=>{
     const nickname = JSON.parse(decodingPayload).nickname
     
     
-    const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?),(1,1,1,?)`
+    const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
+    // const sql2 = `ALTER TABLE board AUTO_INCREMENT=1` <---딜리트할때 사용
+    // const sql3 = `SET @COUNT = 0`
+    // const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
     const prepare = [cate_name,subject,content,nickname]
     
     let response = {
@@ -42,6 +45,9 @@ exports.write = async (req,res)=>{
     }
     try{
         const [result] = await pool.execute(sql,prepare)
+                        //  await pool.execute(sql2)
+                        //  await pool.execute(sql3)
+                        //  await pool.execute(sql4)
         response = {
             ...response,
             result:{
@@ -61,10 +67,14 @@ exports.write = async (req,res)=>{
 }
 
 exports.view = async (req,res)=>{
-    // console.log(req)
+    console.log('hi')
+    console.log(req.query)
     const idx = req.query
+    
+    const index = parseInt(idx.idx)
+    
     const sql = `SELECT * FROM board WHERE idx=?`
-    const prepare = [idx]
+    const prepare = [index]
     let response = {
         errno:0
     }

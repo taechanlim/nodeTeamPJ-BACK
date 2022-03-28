@@ -23,6 +23,7 @@ exports.join = async (req,res)=>{
     
     try{
         const [result] = await pool.execute(sql,prepare) 
+        
         const response = {
             result:{
                 row:result.affectedRows,
