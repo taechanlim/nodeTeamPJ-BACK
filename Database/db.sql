@@ -34,4 +34,40 @@ CREATE TABLE board(
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 
-INSERT INTO board(cate_name,subject,content,nickname) VALUES (1,1,1,'관리'),(1,1,1,'관리'),(1,1,1,'관리'),(1,1,1,'관리');
+CREATE TABLE comment (
+    comment_idx INT PRIMARY KEY AUTO_INCREMENT,
+    nickname VARCHAR(32) NOT NULL,
+    idx INT NOT NULL,
+    content TEXT NOT NULL,
+    recommend INT NOT NULL DEFAULT 0, 
+    date timestamp DEFAULT CURRENT_TIMESTAMP not null,
+    FOREIGN KEY (nickname) REFERENCES user (nickname),
+    FOREIGN KEY (idx) REFERENCES board (idx)
+);
+CREATE TABLE category (
+    cate_idx INT PRIMARY KEY AUTO_INCREMENT,
+    cate_name VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE subcategory (
+    subcate_idx INT PRIMARY KEY AUTO_INCREMENT,
+    cate_idx INT NOT NULL,
+    subcate_name VARCHAR(32) NOT NULL,
+    FOREIGN KEY (cate_idx) REFERENCES category (cate_idx)
+);
+
+CREATE TABLE likes ( 
+    like_idx INT PRIMARY KEY AUTO_INCREMENT,
+    userid VARCHAR(30) NOT NULL,
+    idx INT NOT NULL,
+    like_num INT NOT NULL DEFAULT 0,
+    dislike_num INT NOT NULL DEFAULT 0,
+    like_check INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (userid) REFERENCES user (userid),
+    FOREIGN KEY (idx) REFERENCES board (idx),
+);
+
+CREATE TABLE HashTag(
+    tag_id INT PRIMARY KEY,
+    keywords varchar(20)
+)
