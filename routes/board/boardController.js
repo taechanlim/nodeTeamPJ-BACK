@@ -119,7 +119,7 @@ exports.view = async (req,res)=>{
 //     res.json(response)
 // };
 
-exports.postUpdate = async (req,res)=>{
+exports.update = async (req,res)=>{
     const board = req.body
     const sql = `UPDATE board SET subject='${board.subject}',content='${board.content}' WHERE idx=${board.idx}`
     const prepare = [idx]
