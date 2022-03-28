@@ -34,9 +34,7 @@ exports.write = async (req,res)=>{
     
     
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
-    // const sql2 = `ALTER TABLE board AUTO_INCREMENT=1` <---딜리트할때 사용
-    // const sql3 = `SET @COUNT = 0`
-    // const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    
     const prepare = [cate_name,subject,content,nickname]
     
     let response = {
@@ -45,9 +43,7 @@ exports.write = async (req,res)=>{
     }
     try{
         const [result] = await pool.execute(sql,prepare)
-                        //  await pool.execute(sql2)
-                        //  await pool.execute(sql3)
-                        //  await pool.execute(sql4)
+                        
         response = {
             ...response,
             result:{
@@ -67,8 +63,7 @@ exports.write = async (req,res)=>{
 }
 
 exports.view = async (req,res)=>{
-    console.log('hi')
-    console.log(req.query)
+    
     const idx = req.query
     
     const index = parseInt(idx.idx)
@@ -95,39 +90,71 @@ exports.view = async (req,res)=>{
     res.json(response)
 }
 
-// exports.getUpdate = async (req,res) => {
+exports.getUpdate = async (req,res) => {
     
 
-//     const sql = `select * from board where idx=${index}`
+    const sql = `select * from board where idx=${index}`
 
-//     let response = {
-//         errno:0
-//     }
+    let response = {
+        errno:0
+    }
 
-//     try {
-//         const [result] = await pool.execute(sql)
-//         response = {
-//             ...response,
-//             result
-//         }
-//     } catch (error) {
-//         console.log(error.message)
-//         response = {
-//             errno:1
-//         }
-//     }
-//     res.json(response)
-// };
+    try {
+        const [result] = await pool.execute(sql)
+        response = {
+            ...response,
+            result
+        }
+    } catch (error) {
+        console.log(error.message)
+        response = {
+            errno:1
+        }
+    }
+    res.json(response)
+};
 
 exports.update = async (req,res)=>{
-    const board = req.body
-    const sql = `UPDATE board SET subject='${board.subject}',content='${board.content}' WHERE idx=${board.idx}`
+    const {subject,content,idx} = req.body
+    const sql = `UPDATE board SET subject='${subject}',content='${content}' WHERE idx=${idx}`
     const prepare = [idx]
     let response = {
         errno:0
     }
     try{
         const [result] = await pool.execute(sql,prepare)
+        response = {
+            ...response,
+            result
+        }
+    }catch(e){
+            {
+                console.log(e.message)
+                response={
+                    errno:1
+                }
+            }
+    }
+    res.json(response)
+}
+
+exports.delete = async (req,res)=>{
+    const index = req.body.idx
+    const sql = `DELETE from board WHERE idx=${index}`
+    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
+    const sql3 = `SET @COUNT = 0`
+    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    
+    
+    let response = {
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql)
+                         await pool.execute(sql2)
+                         await pool.execute(sql3)
+                         await pool.execute(sql4)
+
         response = {
             ...response,
             result
