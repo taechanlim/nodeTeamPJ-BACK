@@ -33,3 +33,5 @@ CREATE TABLE board(
     PRIMARY KEY (idx,cate_name),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
+
+INSERT INTO board(cate_name,subject,content,nickname) VALUES (1,1,1,'관리'),(1,1,1,'관리'),(1,1,1,'관리'),(1,1,1,'관리');
