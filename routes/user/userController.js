@@ -56,25 +56,25 @@ exports.join = async (req,res)=>{
     
     }
 
-// exports.idcheck = async (req,res) =>{
-//     const {userid} = req.body
-//     console.log(userid)
+exports.idcheck = async (req,res) =>{
+    const {userid} = req.body
+    console.log(userid)
 
-//     try {
-//         const sql = `SELECT * FROM user WHERE userid = '${userid}'`
-//         const [result] = await pool.execute(sql)
-//         console.log(result)
-//         console.log(result.length)
-//     try {
-//         if (result.length === 0) throw new Error ('사용불가능한 아이디입니다');
-//         res.send('1')
-//     } catch (error) {
-//         res.send('2')
-//     }
-// } catch (error){
-//     console.log(error)
-// }
-// }
+    try {
+        const sql = `SELECT * FROM user WHERE userid = '${userid}'`
+        const [result] = await pool.execute(sql)
+        console.log(result)
+        console.log(result.length)
+    try {
+        if (result.length === 0) throw new Error ('사용불가능한 아이디입니다');
+        res.send('1')
+    } catch (error) {
+        res.send('2')
+    }
+} catch (error){
+    console.log(error)
+}
+}
     
 
 
