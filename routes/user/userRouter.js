@@ -4,9 +4,9 @@ const userController = require('./userController.js')
 
 
 router.post('/join',userController.join)
-
+// router.post('/idcheck',userController.idcheck)
 router.post('/login',userController.login)
-
+router.post('/logout',userController.logout)
 
 
 
