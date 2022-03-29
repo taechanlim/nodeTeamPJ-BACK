@@ -31,13 +31,7 @@ exports.join = async (req,res)=>{
             },
             errno:0,
         }
-        res.setHeader('Set-cookie',`name=${nickname}; path=/; Domain=localhost;`)
-        console
-        res.cookie('name',`${nickname}`,{
-            path:'/',
-            secure:true,
-            domain:'localhost'
-        })
+        
         res.json(response) 
         
     
