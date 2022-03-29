@@ -58,13 +58,13 @@ CREATE TABLE subcategory (
 
 CREATE TABLE likes ( 
     like_idx INT PRIMARY KEY AUTO_INCREMENT,
-    userid VARCHAR(30) NOT NULL,
+    nickname VARCHAR(30) NOT NULL,
     idx INT NOT NULL,
     like_num INT NOT NULL DEFAULT 0,
     dislike_num INT NOT NULL DEFAULT 0,
     like_check INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (userid) REFERENCES user (userid),
-    FOREIGN KEY (idx) REFERENCES board (idx),
+    FOREIGN KEY (nickname) REFERENCES user (nickname),
+    FOREIGN KEY (idx) REFERENCES board (idx)
 );
 
 CREATE TABLE HashTag(
