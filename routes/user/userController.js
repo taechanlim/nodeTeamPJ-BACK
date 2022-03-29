@@ -32,6 +32,7 @@ exports.join = async (req,res)=>{
             errno:0,
         }
         res.setHeader('Set-cookie',`name=${nickname}; path=/; Domain=localhost;`)
+        console
         res.cookie('name',`${nickname}`,{
             path:'/',
             httpOnly:true,
@@ -112,13 +113,4 @@ exports.login = async (req,res)=>{
     }
 }
 
-
-exports.logout = (req,res) => {
-    function deleteCookie(name) {
-        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      }
-      
-      const response = deleteCookie(token);
-      res.json(response)
-}
 
