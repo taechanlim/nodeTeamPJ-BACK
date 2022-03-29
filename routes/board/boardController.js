@@ -90,29 +90,7 @@ exports.view = async (req,res)=>{
     res.json(response)
 }
 
-exports.getUpdate = async (req,res) => {
-    
 
-    const sql = `select * from board where idx=${index}`
-
-    let response = {
-        errno:0
-    }
-
-    try {
-        const [result] = await pool.execute(sql)
-        response = {
-            ...response,
-            result
-        }
-    } catch (error) {
-        console.log(error.message)
-        response = {
-            errno:1
-        }
-    }
-    res.json(response)
-};
 
 exports.update = async (req,res)=>{
     const {subject,content,idx} = req.body

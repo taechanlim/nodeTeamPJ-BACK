@@ -91,8 +91,7 @@ exports.login = async (req,res)=>{
         console.log(jwt)
         
         res.cookie('token',jwt,{
-            path:'/',
-            httpOnly:true,
+            path:'/', 
             secure:true,
             domain:'localhost'
         })
