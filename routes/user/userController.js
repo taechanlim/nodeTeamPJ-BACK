@@ -35,7 +35,6 @@ exports.join = async (req,res)=>{
         console
         res.cookie('name',`${nickname}`,{
             path:'/',
-            httpOnly:true,
             secure:true,
             domain:'localhost'
         })
