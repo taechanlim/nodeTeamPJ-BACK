@@ -1,13 +1,14 @@
 const pool = require('../../Database/db.js').pool
 const {createToken} = require('../../utils/jwt')
 
+
 exports.join = async (req,res)=>{
-    console.log(req.body)
+    
     const {userid,userpw,profile_img,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
+    
     const sql = `INSERT INTO user(
             userid,
             userpw,
-            profile_img,
             username,
             nickname,
             address,
@@ -19,11 +20,20 @@ exports.join = async (req,res)=>{
         ) values(
             ?,?,?,?,?,?,?,?,?,?,?
         )`
-    const prepare = [userid,userpw,profile_img,username,nickname,address,gender,telephone,phonenumber,email,introduce]
-    
+
+    const sql2 = `INSERT INTO user_img(
+        nickname,
+        img
+    ) values(
+        ?,?
+    )`
+
+    const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
+    const prepare2 = [nickname,profile_img]
     try{
         const [result] = await pool.execute(sql,prepare) 
-        
+                         await pool.execute(sql2,prepare2)
+
         const response = {
             result:{
                 row:result.affectedRows,
