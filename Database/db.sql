@@ -19,6 +19,13 @@ CREATE TABLE user(
     PRIMARY KEY (nickname,userid)
 );
 
+CREATE TABLE user_img (
+    ui_idx INT PRIMARY KEY AUTO_INCREMENT,
+    nickname varchar(15) null,
+    img varchar(100) NOT NULL,
+    FOREIGN KEY (nickname) REFERENCES user (nickname)
+);
+
 CREATE TABLE board(
     idx int auto_increment not null,
     cate_name varchar(20) not null,
