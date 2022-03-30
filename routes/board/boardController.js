@@ -147,3 +147,57 @@ exports.delete = async (req,res)=>{
     }
     res.json(response)
 }
+
+exports.pop = async (req,res) => {
+    const sql = `SELECT idx,cate_name,thumbnail,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
+    const prepare = []
+
+    let response = {
+        errno:0
+    }
+
+    try{
+        const [result] = await pool.execute(sql)
+        response = {
+            ...response,
+            result
+        }
+    }catch(e){
+        {
+            console.log(e.message)
+            response={
+                errno:1
+            }
+        }
+    }
+    res.json(response)
+}
+
+exports.search = async (req,res) => {
+    console.log(req.body.input)
+    const word = req.body.input
+
+    const sql = `SELECT idx,subject,content,nickname FROM board WHERE content LIKE '${word}%';`
+    // const prepare = [word]
+
+    let response = {
+        errno:0
+    }
+
+    try{
+        const [result] = await pool.execute(sql)
+        // console.log(result)
+        response = {
+            ...response,
+            result
+        }
+    }catch(e){
+        {
+            console.log(e.message)
+            response={
+                errno:1
+            }
+        }
+    }
+    res.json(response)
+}
