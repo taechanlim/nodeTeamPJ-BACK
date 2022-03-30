@@ -69,12 +69,15 @@ exports.view = async (req,res)=>{
     const index = parseInt(idx.idx)
     
     const sql = `SELECT * FROM board WHERE idx=?`
+    const sql2 = `UPDATE board SET hit=hit+1 WHERE idx=${index}`
+
     const prepare = [index]
     let response = {
         errno:0
     }
     try{
         const [result] = await pool.execute(sql,prepare)
+                         await pool.execute(sql2)
         response = {
             ...response,
             result
