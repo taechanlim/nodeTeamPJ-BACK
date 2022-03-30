@@ -5,6 +5,7 @@ const boardRouter = require('./board/boardRouter.js');
 // const adminRouter = require('./admin/adminRouter.js');
 // const replyRouter = require('./reply/replyRouter.js');
 
+
 const router = express.Router();
 
 router.use('/api/user',userRouter);
