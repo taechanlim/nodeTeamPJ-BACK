@@ -8,5 +8,7 @@ router.post('/view',boardController.view);
 router.post('/update',boardController.update);
 router.post('/delete',boardController.delete);
 
+router.post('/pop',boardController.pop)
+router.post('/search',boardController.search)
 
 module.exports = router;
