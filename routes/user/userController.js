@@ -154,6 +154,7 @@ const getBoard = async (req, res) => {
         const {user} = req.session
         const page = req.params.num
         const count = 10
+         //sql문 수정해야됨
         let sql = 'SELECT idx, title, DATE_FORMAT(date, "%Y-%m-%d") AS date, view, likes FROM user LEFT JOIN board ON user.userid=board.userid WHERE board.userid=?'
         const [rows, fields] = await promisePool.query(sql, [user.userid])
         pageNum = []
@@ -177,6 +178,7 @@ const getComment = async (req, res) => {
         const {user} = req.session
         const page = req.params.num
         const count = 10
+         //sql문 수정해야됨
         let sql = 'SELECT cid, comment, DATE_FORMAT(c_date, "%Y-%m-%d %r") AS date, bid FROM user LEFT JOIN comment ON user.userid=comment.c_userid WHERE c_userid=?'
         const [rows, fields] = await promisePool.query(sql, [user.userid])
         pageNum = []
@@ -199,6 +201,7 @@ const getScrap = async (req, res) => {
         const {user} = req.session
         const page = req.params.num
         const count = 10
+        //sql문 수정해야됨
         let sql = 'SELECT s_idx, s_userid, idx, title, nickname, DATE_FORMAT(date, "%Y-%m-%d") AS date FROM scrap LEFT JOIN board ON scrap.bid=board.idx WHERE s_userid=?;'
         const [rows, fields] = await promisePool.query(sql, [user.userid])
         pageNum = []
