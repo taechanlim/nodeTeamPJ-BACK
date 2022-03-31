@@ -27,6 +27,7 @@ CREATE TABLE user_img (
 );
 
 CREATE TABLE board(
+    b_userid varchar(15) not null,
     idx int auto_increment not null,
     cate_name varchar(20) not null,
     subject varchar(50) not null,
