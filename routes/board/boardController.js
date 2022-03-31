@@ -204,3 +204,36 @@ exports.search = async (req,res) => {
     }
     res.json(response)
 }
+
+
+//sql2  작성해야함 , db 에 scrap 손봐야함
+exports.scrap = async(req,res) => {
+const {idx} = req.body
+const userid = `admin`
+const sql1 = `SELECT * FROM scrap where bid = ${idx} and s_userid='${userid}'`
+let response = {
+    errno : 1
+} 
+try{
+    const [result] = await promisePool.execute(sql1)
+    if(result[0] !== undefined){
+        response = {
+            ...response,
+            errMsg : 'Already scrap'
+        }
+    }
+    else{
+        const sql2 = ``
+        const [result2] = await promisePool.execute(sql2)
+        response = {
+            ...response,
+            errno:0
+        }
+    }
+    res.json(response)
+    }catch(e){
+        console.log(e)
+        res.json(response)
+    }
+}
+
