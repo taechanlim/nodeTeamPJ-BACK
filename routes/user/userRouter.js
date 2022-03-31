@@ -4,6 +4,7 @@ const userController = require('./userController.js')
 const { upload } = require('../../utils/uploads.js')
 
 router.post('/join',upload.single('img'),userController.join)
+router.post('/profileimg',userController.profileimg)
 router.post('/idcheck',userController.idcheck)
 router.post('/login',userController.login)
 
