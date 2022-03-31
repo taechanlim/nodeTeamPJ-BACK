@@ -1,13 +1,15 @@
 const {promisePool} = require('../../Database/db.js')
 const  {alertMove} = require('../../utils/alert.js')
 
-const admin = (req,res) =>{
-    const {user} = req.session
-    res.render('/admin ',{  //여기 랜더할 경로
-        user
-     } 
-    )
-}
+// const admin = (req,res) =>{
+//     const {user} = req.session
+//     res.render('/admin ',{  //여기 랜더할 경로
+//         user
+//      }
+//     )
+// }
+
+
 
 const adminCheck = (req,res)=>{
     const {user} = req.session
@@ -20,6 +22,7 @@ const adminCheck = (req,res)=>{
         })
     }
 }
+
 const login = async(req,res)=>{
     try{
         const {userid,userpw} = req.body
@@ -32,11 +35,12 @@ const login = async(req,res)=>{
             res.render('./admin/admin_home',{
                 user
             })
+            alert('관리자님 환영합니다.')
         }else{
             res.send(alertMove('최고관리자만 접속 가능합니다','/'))
         }
 
- 
+
     }catch{
         console.log(err)
         res.status(500).send('<h1>Internot Server Error</h1>')
@@ -47,24 +51,24 @@ const logout = (req,res)=>{
     req.session.destroy(()=>{
         req.session
     })
-    
 res.send(alertMove('최고관리자 로그아웃 되었습니다.','/'))
 }
 
-const adminList = async(req,res)=>{
-    try{
-        const{user}= req.session
-        let sql = "SELECT * FROM user"
-        const [rows,fields] = await promisePool.query(sql)
-        res.render('./admin/admin_list.html',{
-            user,
-            rows           
-        })
-    }catch{
-        console.log(err)
-        res.status(500).send('<h1>Internal Server Error</h1>')
-    }
-}
+//관리자 정보가 필요한가? (관리자 페이지)
+// const adminList = async(req,res)=>{
+//     try{
+//         const{user}= req.session
+//         let sql = "SELECT * FROM user"
+//         const [rows,fields] = await promisePool.query(sql)
+//         res.render('./admin/admin_list.html',{
+//             user,
+//             rows
+//         })
+//     }catch{
+//         console.log(err)
+//         res.status(500).send('<h1>Internal Server Error</h1>')
+//     }
+// }
 
 const adminInfo = async(req,res)=>{
     try{
@@ -81,20 +85,27 @@ const adminInfo = async(req,res)=>{
         res.status(500).send('<h1>Internet Server Error</h1>')
     }
 }
+//관리자가 회원정보 수정 
 
-// const postAdminInfo = async(req,res)=>{
-//     try{
-//         const{level,access,userid} =req.body
-//         let sql = 'UPDATE user SET level=
-//     }
-// }
+const postAdminInfo = async (req, res) => {
+    try {
+        const {level, access, userid} = req.body
+        let sql = 'UPDATE user SET level=?, access=? WHERE userid=?'
+        await promisePool.query(sql, [level, access, userid])
+        res.send(alertMove('회원 정보가 수정되었습니다.', '/admin/list'))
+    } catch {
+        console.log(err)
+        res.status(500).send('<h1>Internal Server Error</h1>')
+    }
+}
+
 
 //메인카테고리 추가 수정 삭제 각각
 const adminMainPlus =async(req,res)=>{
     try{
     const {cate_name} = req.body
     let sql = `INSERT INTO category(cate_name) `
-    res.send(alertMove('카테고리가 수정되었습니다.', `/board/view/?idx=${idx}`)) //뒷부분 수정
+    res.send(alertMove('카테고리가 추가되었습니다.', `/board/view/?idx=${idx}`)) //뒷부분 수정
     }catch   {
 
       console.log(err)
@@ -109,11 +120,11 @@ const adminMainEdit=async(req,res)=>{
       const {cate_name} = req.body
       let sql = 'UPDATE category SET title=?, content=? WHERE idx=?'
       await promisePool.query(sql, [title, content, idx])
-      res.send(alertMove('카테고리가 수정되었습니다.', `/board/view/?idx=${idx}`)) //뒷부분 수정 
+      res.send(alertMove('카테고리가 수정되었습니다.', `/board/view/?idx=${idx}`)) //뒷부분 수정
   }catch{
       console.log(err)
       res.status(500).send('<h1>Internet Server Error</h1>')
-      
+
   }
 }
 
@@ -134,7 +145,7 @@ const adminMainDelete =async(req,res)=>{
 //서브카테고리 추가 수정 삭제 수정해야됨
 const adminSubPlus = async(req,res)=>{
     try{
-        
+        res.send(alertMove('카테고리가 추가되었습니다.',`/board/view/?idx= $[idx]`))
       }catch{
           console.log(err)
           res.status(500).send('<h1>Internet Server Error</h1>')
@@ -143,7 +154,7 @@ const adminSubPlus = async(req,res)=>{
 
 const adminSubEdit = async(req,res)=>{
     try{
-       
+        res.send(alertMove('카테고리가 수정되었습니다.',`/board/view/?idx= $[idx]`))
       }catch{
           console.log(err)
           res.status(500).send('<h1>Internet Server Error</h1>')
@@ -152,7 +163,7 @@ const adminSubEdit = async(req,res)=>{
 
 const adminSubDelete = async(req,res)=>{
     try{
-      
+        res.send(alertMove('카테고리가 삭제되었습니다.',`/board/view/?idx= $[idx]`))
       }catch{
           console.log(err)
           res.status(500).send('<h1>Internet Server Error</h1>')

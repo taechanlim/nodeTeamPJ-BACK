@@ -15,4 +15,8 @@ router.get('/list',adminController.adminList)
 router.get('/info',adminController.adminInfo)
 router.post('/info',adminController.postAdminInfo)
 
+//router 추가
+//adminMainPlus , adminMainEdit , adminMainDelete
+//adminSubPlus, adminSubEdit, adminSubDelete
+
 module.exports =router

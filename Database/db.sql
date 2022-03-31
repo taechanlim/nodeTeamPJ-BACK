@@ -43,6 +43,7 @@ CREATE TABLE board(
 );
 
 CREATE TABLE comment (
+    c_userid VARCHAR(30) NOT NULL
     comment_idx INT PRIMARY KEY AUTO_INCREMENT,
     nickname VARCHAR(32) NOT NULL,
     idx INT NOT NULL,
@@ -77,11 +78,12 @@ CREATE TABLE likes (
 
 CREATE TABLE HashTag(
     tag_id INT PRIMARY KEY,
-    keywords varchar(20)
-)
+    keywords varchar(20) NOT NULL,
+    bid INT NOT NULL
+);
 
 CREATE TABLE scrap(
     scrap_idx INT PRIMARY KEY AUTO_INCREMENT,
-    s_userid
-    bid
-)
+    s_userid VARCHAR(30) NOT NULL,
+    bid INT NOT NULL
+);
