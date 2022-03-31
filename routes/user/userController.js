@@ -3,61 +3,62 @@ const {createToken} = require('../../utils/jwt')
 
 
 exports.join = async (req,res)=>{
-    
-    const {userid,userpw,profile_img,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
-    
-    const sql = `INSERT INTO user(
-            userid,
-            userpw,
-            username,
-            nickname,
-            address,
-            gender,
-            telephone,
-            phonenumber,
-            email,
-            introduce
-        ) values(
-            ?,?,?,?,?,?,?,?,?,?,?
-        )`
+    const {userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
+    // const img = req.file
+    console.log(req.body)
+    console.log(req.file)
 
-    const sql2 = `INSERT INTO user_img(
-        nickname,
-        img
-    ) values(
-        ?,?
-    )`
-
-    const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
-    const prepare2 = [nickname,profile_img]
-    try{
-        const [result] = await pool.execute(sql,prepare) 
-                         await pool.execute(sql2,prepare2)
-
-        const response = {
-            result:{
-                row:result.affectedRows,
-                id:result.insertId
-            },
-            errno:0,
-        }
-        
-        res.json(response) 
-        
-    
-        }catch(e){
-        console.log(e.message)
-        const response = {
-            result:{
-                row:0,
-                id:0
-            },
-            errno:1,
-        }
-        res.json(response)
-        }
-    
-    }
+    // const sql = `INSERT INTO user(
+    //         userid,
+    //         userpw,
+    //         username,
+    //         nickname,
+    //         address,
+    //         gender,
+    //         telephone,
+    //         phonenumber,
+    //         email,
+    //         introduce
+    //     ) values(
+    //         ?,?,?,?,?,?,?,?,?,?
+    //     )`
+    //
+    // const sql2 = `INSERT INTO user_img(
+    //     nickname,
+    //     img
+    // ) values(
+    //     ?,?
+    // )`
+    //
+    // const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
+    // const prepare2 = [nickname,profile_img]
+    // try{
+    //     const [result] = await pool.execute(sql,prepare)
+    //                      await pool.execute(sql2,prepare2)
+    //
+    //     const response = {
+    //         result:{
+    //             row:result.affectedRows,
+    //             id:result.insertId
+    //         },
+    //         errno:0,
+    //     }
+    //
+    //     res.json(response)
+    //
+    //
+    //     }catch(e){
+    //     console.log(e.message)
+    //     const response = {
+    //         result:{
+    //             row:0,
+    //             id:0
+    //         },
+    //         errno:1,
+    //     }
+    //     res.json(response)
+    //     }
+}
 
 exports.idcheck = async (req,res) =>{
     const {userid} = req.body
