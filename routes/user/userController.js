@@ -82,8 +82,8 @@ exports.idcheck = async (req,res) =>{
 
 
 exports.profileimg = async (req,res)=>{
-
-    const sql = `SELECT * from user_img`
+    const {nickname} = req.body
+    const sql = `SELECT * from user_img WHERE nickname = ${nickname}`
     
     try{
         const [result] = await pool.execute(sql)
