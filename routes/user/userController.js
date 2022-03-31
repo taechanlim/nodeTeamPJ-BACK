@@ -4,10 +4,12 @@ const {createToken} = require('../../utils/jwt')
 
 exports.join = async (req,res)=>{
     const {userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
-    const img = req.file.path
-    console.log(req.body)
-    console.log(img)
-
+    let imgarr = []
+    if(req.file != undefined){
+        imgarr.push(req.file.path)
+    }
+    let [img] = imgarr
+        
     const sql = `INSERT INTO user(
             userid,
             userpw,
@@ -34,7 +36,7 @@ exports.join = async (req,res)=>{
     const prepare2 = [nickname,img]
     try{
         const [result] = await pool.execute(sql,prepare)
-                         await pool.execute(sql2,prepare2)
+                         if(img) await pool.execute(sql2,prepare2)
     
         const response = {
             result:{
@@ -45,7 +47,7 @@ exports.join = async (req,res)=>{
         }
     
         res.json(response)
-    
+        
     
         }catch(e){
         console.log(e.message)
@@ -83,7 +85,7 @@ exports.idcheck = async (req,res) =>{
 
 exports.profileimg = async (req,res)=>{
     const {nickname} = req.body
-    const sql = `SELECT * from user_img WHERE nickname = ${nickname}`
+    const sql = `SELECT * from user_img WHERE nickname = '${nickname}'`
     
     try{
         const [result] = await pool.execute(sql)
