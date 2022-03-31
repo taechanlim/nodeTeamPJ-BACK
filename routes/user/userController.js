@@ -4,60 +4,60 @@ const {createToken} = require('../../utils/jwt')
 
 exports.join = async (req,res)=>{
     const {userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
-    // const img = req.file
+    const img = req.file.path
     console.log(req.body)
-    console.log(req.file)
+    console.log(img)
 
-    // const sql = `INSERT INTO user(
-    //         userid,
-    //         userpw,
-    //         username,
-    //         nickname,
-    //         address,
-    //         gender,
-    //         telephone,
-    //         phonenumber,
-    //         email,
-    //         introduce
-    //     ) values(
-    //         ?,?,?,?,?,?,?,?,?,?
-    //     )`
-    //
-    // const sql2 = `INSERT INTO user_img(
-    //     nickname,
-    //     img
-    // ) values(
-    //     ?,?
-    // )`
-    //
-    // const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
-    // const prepare2 = [nickname,profile_img]
-    // try{
-    //     const [result] = await pool.execute(sql,prepare)
-    //                      await pool.execute(sql2,prepare2)
-    //
-    //     const response = {
-    //         result:{
-    //             row:result.affectedRows,
-    //             id:result.insertId
-    //         },
-    //         errno:0,
-    //     }
-    //
-    //     res.json(response)
-    //
-    //
-    //     }catch(e){
-    //     console.log(e.message)
-    //     const response = {
-    //         result:{
-    //             row:0,
-    //             id:0
-    //         },
-    //         errno:1,
-    //     }
-    //     res.json(response)
-    //     }
+    const sql = `INSERT INTO user(
+            userid,
+            userpw,
+            username,
+            nickname,
+            address,
+            gender,
+            telephone,
+            phonenumber,
+            email,
+            introduce
+        ) values(
+            ?,?,?,?,?,?,?,?,?,?
+        )`
+    
+    const sql2 = `INSERT INTO user_img(
+        nickname,
+        img
+    ) values(
+        ?,?
+    )`
+    
+    const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
+    const prepare2 = [nickname,img]
+    try{
+        const [result] = await pool.execute(sql,prepare)
+                         await pool.execute(sql2,prepare2)
+    
+        const response = {
+            result:{
+                row:result.affectedRows,
+                id:result.insertId
+            },
+            errno:0,
+        }
+    
+        res.json(response)
+    
+    
+        }catch(e){
+        console.log(e.message)
+        const response = {
+            result:{
+                row:0,
+                id:0
+            },
+            errno:1,
+        }
+        res.json(response)
+        }
 }
 
 exports.idcheck = async (req,res) =>{
@@ -79,7 +79,39 @@ exports.idcheck = async (req,res) =>{
     console.log(error)
 }
 }
+
+
+exports.profileimg = async (req,res)=>{
+
+    const sql = `SELECT * from user_img`
     
+    try{
+        const [result] = await pool.execute(sql)
+        console.log(result)
+        const response = {
+            result:{
+                row:result.affectedRows,
+                id:result.insertId
+            },
+            errno:0,
+        }
+    
+        res.json(response)
+    
+    
+        }catch(e){
+        console.log(e.message)
+        const response = {
+            result:{
+                row:0,
+                id:0
+            },
+            errno:1,
+        }
+        res.json(response)
+        }
+}
+
 
 
 exports.login = async (req,res)=>{
