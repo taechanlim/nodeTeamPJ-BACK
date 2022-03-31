@@ -79,3 +79,9 @@ CREATE TABLE HashTag(
     tag_id INT PRIMARY KEY,
     keywords varchar(20)
 )
+
+CREATE TABLE scrap(
+    scrap_idx INT PRIMARY KEY AUTO_INCREMENT,
+    s_userid
+    bid
+)
