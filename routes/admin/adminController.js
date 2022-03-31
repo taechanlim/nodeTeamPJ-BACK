@@ -89,7 +89,7 @@ const adminInfo = async(req,res)=>{
 //     }
 // }
 
-//메인 추가 수정 삭제 각각
+//메인카테고리 추가 수정 삭제 각각
 const adminMainPlus =async(req,res)=>{
     try{
     const {cate_name} = req.body
@@ -131,7 +131,7 @@ const adminMainDelete =async(req,res)=>{
     }
 }
 
-//서브 추가 수정 삭제 수정해야됨
+//서브카테고리 추가 수정 삭제 수정해야됨
 const adminSubPlus = async(req,res)=>{
     try{
         
