@@ -1,6 +1,6 @@
 const pool = require('../../Database/db.js').pool
 const {createToken} = require('../../utils/jwt')
-
+const {alertMove} = require('../../utils/alert.js')
 
 exports.join = async (req,res)=>{
     const {userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
@@ -209,7 +209,7 @@ const getScrap = async (req, res) => {
         pageNum = []
         for (let i=0; i<rows.length/count; i++) {pageNum.push(i)}
         const result = paging(page, count, rows)
-        res.render('./user/profile/user_scrap.html', {
+        res.render('./user/profile/user_scrap.html', { //렌더 위치 확인하고 주석지우기
             user,
             result,
             page,
@@ -220,3 +220,12 @@ const getScrap = async (req, res) => {
         res.status(500).send('<h1>Internal Server Error</h1>')
     }    
 }
+
+
+//구현해야 할 부분 스크랩보기  + 좋아요 
+// //스크랩보기 
+// exports.postScrap = async(req,res)=>{
+//     try{
+//         const {user} = req.session
+//     }
+// }
