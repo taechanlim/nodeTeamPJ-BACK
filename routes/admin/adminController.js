@@ -1,20 +1,10 @@
-const {promisePool} = require('../../Database/db.js')
+const pool = require('../../Database/db.js').pool
 const  {alertMove} = require('../../utils/alert.js')
-
-// const admin = (req,res) =>{
-//     const {user} = req.session
-//     res.render('/admin ',{  //여기 랜더할 경로
-//         user
-//      }
-//     )
-// }
-
-
 
 const adminCheck = (req,res)=>{
     const {user} = req.session
     if(user.level != 3){
-        res.send(alertMove('최괴 관리자로 접속하여 이용해주십시오.', '/'))
+        res.send(alertMove('최고 관리자로 접속하여 이용해주십시오.', '/'))
     }
     else{
         res.render('./admin/admin_home.html',{// 여기 렌더할 경로
@@ -39,8 +29,6 @@ const login = async(req,res)=>{
         }else{
             res.send(alertMove('최고관리자만 접속 가능합니다','/'))
         }
-
-
     }catch{
         console.log(err)
         res.status(500).send('<h1>Internot Server Error</h1>')
@@ -54,21 +42,7 @@ const logout = (req,res)=>{
 res.send(alertMove('최고관리자 로그아웃 되었습니다.','/'))
 }
 
-//관리자 정보가 필요한가? (관리자 페이지)
-// const adminList = async(req,res)=>{
-//     try{
-//         const{user}= req.session
-//         let sql = "SELECT * FROM user"
-//         const [rows,fields] = await promisePool.query(sql)
-//         res.render('./admin/admin_list.html',{
-//             user,
-//             rows
-//         })
-//     }catch{
-//         console.log(err)
-//         res.status(500).send('<h1>Internal Server Error</h1>')
-//     }
-// }
+//회원정보보기
 
 const adminInfo = async(req,res)=>{
     try{
@@ -98,6 +72,11 @@ const postAdminInfo = async (req, res) => {
         res.status(500).send('<h1>Internal Server Error</h1>')
     }
 }
+
+// const boardHidden = async(req,res)=>{
+
+
+// } 
 
 
 //메인카테고리 추가 수정 삭제 각각
@@ -171,12 +150,12 @@ const adminSubDelete = async(req,res)=>{
 }
 
 module.exports = {
-    admin,
+   
     login,
     adminCheck,
     logout,
-    adminList,
     adminInfo,
+    boardHidden,
     postAdminInfo,
     adminMainPlus,
     adminMainEdit,
