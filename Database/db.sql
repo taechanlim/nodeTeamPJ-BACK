@@ -26,8 +26,7 @@ CREATE TABLE user_img (
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 
-CREATE TABLE board(
-    
+CREATE TABLE board(  
     idx int auto_increment not null,
     cate_name varchar(20) not null,
     subject varchar(50) not null,
@@ -37,8 +36,8 @@ CREATE TABLE board(
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
     hit int DEFAULT 0 not null,
     likes int DEFAULT 0 not null,
-    b_userid varchar(30) not null,
     nickname varchar(15) null,
+    deleteFlag char(1) DEFAULT 'y',
     PRIMARY KEY (idx,cate_name),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
