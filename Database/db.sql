@@ -27,7 +27,7 @@ CREATE TABLE user_img (
 );
 
 CREATE TABLE board(
-    b_userid varchar(15) not null,
+    
     idx int auto_increment not null,
     cate_name varchar(20) not null,
     subject varchar(50) not null,
@@ -37,19 +37,21 @@ CREATE TABLE board(
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
     hit int DEFAULT 0 not null,
     likes int DEFAULT 0 not null,
+    b_userid varchar(30) not null,
     nickname varchar(15) null,
     PRIMARY KEY (idx,cate_name),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 
 CREATE TABLE comment (
-    c_userid VARCHAR(30) NOT NULL
     comment_idx INT PRIMARY KEY AUTO_INCREMENT,
     nickname VARCHAR(32) NOT NULL,
     idx INT NOT NULL,
-    content TEXT NOT NULL,
+    comment TEXT NOT NULL,
     recommend INT NOT NULL DEFAULT 0, 
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
+    bid INT NOT NULL,
+    c_userid VARCHAR(30) NOT NULL
     FOREIGN KEY (nickname) REFERENCES user (nickname),
     FOREIGN KEY (idx) REFERENCES board (idx)
 );
