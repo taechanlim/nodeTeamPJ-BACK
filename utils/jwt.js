@@ -1,6 +1,7 @@
 require('dotenv').config()
 const crypto = require('crypto')
 const salt = process.env.SALT || 'team5'
+const jwt = require('jsonwebtoken');
 
 function createToken(state){
     const header = {
@@ -24,6 +25,9 @@ function encoding(value){
     return Buffer.from(JSON.stringify(value))
                  .toString('base64')
                  .replace(/[=]/g,'')
+}
+function decodePayload(token) {
+    return jwt.verify(token, secretKey);
 }
 
 function createSignature(header,payload){
