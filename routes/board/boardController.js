@@ -96,7 +96,31 @@ exports.view = async (req,res)=>{
     res.json(response)
 }
 
-
+// exports.likes = async (req,res)=>{
+    
+//     const sql = `UPDATE board SET likes=hit+1 WHERE idx=${index}`
+    
+//     const prepare = [index]
+//     let response = {
+//         errno:0
+//     }
+//     try{
+//         const [result] = await pool.execute(sql,prepare)
+                         
+//         response = {
+//             ...response,
+//             result
+//         }
+//     }catch(e){
+//             {
+//                 console.log(e.message)
+//                 response={
+//                     errno:1
+//                 }
+//             }
+//     }
+//     res.json(response)
+// }
 
 exports.update = async (req,res)=>{
     const {subject,content,idx} = req.body
