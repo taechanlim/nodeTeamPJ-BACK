@@ -2,7 +2,7 @@ const pool = require('../../Database/db.js').pool
 
 
 exports.list = async (req,res)=>{
-    const sql = `SELECT idx,cate_name,thumbnail,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
+    const sql = `SELECT idx,cate_name,thumbnail,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
     const sql2 = `SELECT count(idx) as total_record FROM board`
     let response = {
         errno:1
