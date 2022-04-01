@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.use('/api/user',userRouter);
 router.use('/api/board',boardRouter);
+router.use('/api/comment',commentRouter)
 
 router.use(Auth)
 module.exports = router;
