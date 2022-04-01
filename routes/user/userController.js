@@ -4,60 +4,62 @@ const {alertMove} = require('../../utils/alert.js')
 
 exports.join = async (req,res)=>{
     const {userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce} = req.body
-    // const img = req.file
-    console.log(req.body)
-    console.log(req.file)
-
-    // const sql = `INSERT INTO user(
-    //         userid,
-    //         userpw,
-    //         username,
-    //         nickname,
-    //         address,
-    //         gender,
-    //         telephone,
-    //         phonenumber,
-    //         email,
-    //         introduce
-    //     ) values(
-    //         ?,?,?,?,?,?,?,?,?,?
-    //     )`
-    //
-    // const sql2 = `INSERT INTO user_img(
-    //     nickname,
-    //     img
-    // ) values(
-    //     ?,?
-    // )`
-    //
-    // const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
-    // const prepare2 = [nickname,profile_img]
-    // try{
-    //     const [result] = await pool.execute(sql,prepare)
-    //                      await pool.execute(sql2,prepare2)
-    //
-    //     const response = {
-    //         result:{
-    //             row:result.affectedRows,
-    //             id:result.insertId
-    //         },
-    //         errno:0,
-    //     }
-    //
-    //     res.json(response)
-    //
-    //
-    //     }catch(e){
-    //     console.log(e.message)
-    //     const response = {
-    //         result:{
-    //             row:0,
-    //             id:0
-    //         },
-    //         errno:1,
-    //     }
-    //     res.json(response)
-    //     }
+    let imgarr = []
+    if(req.file != undefined){
+        imgarr.push(req.file.path)
+    }
+    let [img] = imgarr
+        
+    const sql = `INSERT INTO user(
+            userid,
+            userpw,
+            username,
+            nickname,
+            address,
+            gender,
+            telephone,
+            phonenumber,
+            email,
+            introduce
+        ) values(
+            ?,?,?,?,?,?,?,?,?,?
+        )`
+    
+    const sql2 = `INSERT INTO user_img(
+        nickname,
+        img
+    ) values(
+        ?,?
+    )`
+    
+    const prepare = [userid,userpw,username,nickname,address,gender,telephone,phonenumber,email,introduce]
+    const prepare2 = [nickname,img]
+    try{
+        const [result] = await pool.execute(sql,prepare)
+                         if(img) await pool.execute(sql2,prepare2)
+    
+        const response = {
+            result:{
+                row:result.affectedRows,
+                id:result.insertId
+            },
+            errno:0,
+        }
+    
+        res.json(response)
+        
+    
+        }catch(e){
+        console.log(e.message)
+        const response = {
+            result:{
+                row:0,
+                id:0
+            },
+            errno:1,
+        }
+        res.json(response)
+        }
 }
 
 exports.idcheck = async (req,res) =>{
@@ -79,7 +81,39 @@ exports.idcheck = async (req,res) =>{
     console.log(error)
 }
 }
+
+
+exports.profileimg = async (req,res)=>{
+    const {nickname} = req.body
+    const sql = `SELECT * from user_img WHERE nickname = '${nickname}'`
     
+    try{
+        const [result] = await pool.execute(sql)
+        console.log(result)
+        const response = {
+            result:{
+                row:result.affectedRows,
+                id:result.insertId
+            },
+            errno:0,
+        }
+    
+        res.json(response)
+    
+    
+        }catch(e){
+        console.log(e.message)
+        const response = {
+            result:{
+                row:0,
+                id:0
+            },
+            errno:1,
+        }
+        res.json(response)
+        }
+}
+
 
 
 exports.login = async (req,res)=>{

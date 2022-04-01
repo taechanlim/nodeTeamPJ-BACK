@@ -34,6 +34,7 @@ exports.write = async (req,res)=>{
     
     
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
+    const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
     const prepare = [cate_name,subject,content,nickname]
     
@@ -43,7 +44,7 @@ exports.write = async (req,res)=>{
     }
     try{
         const [result] = await pool.execute(sql,prepare)
-                        
+                         await pool.execute(sql2)
         response = {
             ...response,
             result:{
@@ -65,11 +66,12 @@ exports.write = async (req,res)=>{
 exports.view = async (req,res)=>{
     
     const idx = req.query
-    
+    const nickname = req.query
     const index = parseInt(idx.idx)
     
     const sql = `SELECT * FROM board WHERE idx=?`
     const sql2 = `UPDATE board SET hit=hit+1 WHERE idx=${index}`
+    const sql3 = `SELECT * FROM user WHERE nickname='${nickname}'`
 
     const prepare = [index]
     let response = {
@@ -78,6 +80,7 @@ exports.view = async (req,res)=>{
     try{
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
+                         await pool.execute(sql3)
         response = {
             ...response,
             result
