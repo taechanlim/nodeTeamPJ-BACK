@@ -51,9 +51,8 @@ CREATE TABLE comment (
     recommend INT NOT NULL DEFAULT 0, 
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
     bid INT NOT NULL,
-    c_userid VARCHAR(30) NOT NULL
-    FOREIGN KEY (nickname) REFERENCES user (nickname),
-    FOREIGN KEY (idx) REFERENCES board (idx)
+    FOREIGN KEY (idx) REFERENCES board (idx),
+    FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 CREATE TABLE category (
     cate_idx INT PRIMARY KEY AUTO_INCREMENT,
