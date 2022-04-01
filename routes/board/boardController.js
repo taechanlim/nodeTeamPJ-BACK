@@ -34,6 +34,7 @@ exports.write = async (req,res)=>{
     
     
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
+    const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
     const prepare = [cate_name,subject,content,nickname]
     
@@ -43,7 +44,7 @@ exports.write = async (req,res)=>{
     }
     try{
         const [result] = await pool.execute(sql,prepare)
-                        
+                         await pool.execute(sql2)
         response = {
             ...response,
             result:{
