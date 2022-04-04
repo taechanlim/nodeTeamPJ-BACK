@@ -42,6 +42,13 @@ CREATE TABLE board(
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 
+CREATE TABLE board_img (
+    bi_idx INT PRIMARY KEY AUTO_INCREMENT,
+    idx int not null,
+    img varchar(300) NOT NULL,
+    FOREIGN KEY (idx) REFERENCES board (idx)
+);
+
 CREATE TABLE comment (
     comment_idx INT PRIMARY KEY AUTO_INCREMENT,
     nickname VARCHAR(32) NOT NULL,
@@ -49,7 +56,6 @@ CREATE TABLE comment (
     comment TEXT NOT NULL,
     recommend INT NOT NULL DEFAULT 0, 
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
-    bid INT NOT NULL,
     FOREIGN KEY (idx) REFERENCES board (idx),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
