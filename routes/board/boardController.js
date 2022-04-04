@@ -85,12 +85,12 @@ exports.write = async (req,res)=>{
 exports.view = async (req,res)=>{
     
     const idx = req.query
-    const nickname = req.query
+    const {nickname} = req.query
     const index = parseInt(idx.idx)
-    
+    const realnickname = nickname[1]
     const sql = `SELECT * FROM board WHERE idx=?`
     const sql2 = `UPDATE board SET hit=hit+1 WHERE idx=${index}`
-    const sql3 = `SELECT * FROM user WHERE nickname='${nickname}'`
+    const sql3 = `SELECT * FROM user WHERE nickname='${realnickname}'`
     
     
     const prepare = [index]
