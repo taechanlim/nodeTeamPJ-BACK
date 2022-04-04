@@ -64,18 +64,27 @@ exports.write = async (req, res) => {
 //댓글삭제
 exports.delete = async (req, res) => {
     const { comment_idx } = req.body
+    console.log(req.body)
+    const index = req.body.comment_idx
+    const sql = `DELETE from board WHERE comment_idx=${index}`
+    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
+    const sql3 = `SET @COUNT = 0`
+    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    
     
     let response = {
-        errno: 1
+        errno:0
     }
-    try {
-        let sql1 = `DELETE FROM comment where comment_idx = ${comment_idx};`
-        const [result] = await pool.execute(sql1)
+    try{
+        const [result] = await pool.execute(sql)
+                         await pool.execute(sql2)
+                         await pool.execute(sql3)
+                         await pool.execute(sql4)
+
         response = {
             ...response,
-            errno: 0,
+            result
         }
-        res.json(response)
     } catch (err) {
         console.log(err)
         res.status(500).send('<h1>Internal Server Error</h1>')
