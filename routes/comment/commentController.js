@@ -26,22 +26,8 @@ try{
 
 //댓글작성
 exports.write = async (req, res) => {
-    const { bid,comment,idx } = req.body
 
-    console.log(comment)
-    const {token} = req.cookies
-    // console.log(token)
-    const [,payload,] = token.split('.')
-    const decodingPayload = Buffer.from(payload,'base64').toString()
-    const nickname = JSON.parse(decodingPayload).nickname
-
-    let response = {
-        errno: 1
-    }
-    try {
-        let sql1 = `
-        INSERT INTO comment(bid, idx, nickname, date, comment)
-        values(1,'${idx}','${nickname}',now(), '${comment}') ;`
+       
         const [result] = await pool.execute(sql1)
 
         let pointSql = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`

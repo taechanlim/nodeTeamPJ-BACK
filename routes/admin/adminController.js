@@ -83,8 +83,14 @@ const postAdminInfo = async (req, res) => {
 const adminMainPlus =async(req,res)=>{
     try{
     const {cate_name} = req.body
-    let sql = `INSERT INTO category(cate_name) `
-    res.send(alertMove('카테고리가 추가되었습니다.', `/board/view/?idx=${idx}`)) //뒷부분 수정
+    let sql = `INSERT INTO category(cate_name) VALUES(${cate_name})`
+    const [result] = await pool.execute(sql)
+        response = {
+            ...response,
+            errno:0,
+            result
+        }
+    res.send(alertMove('카테고리가 추가되었습니다.', '/admin')) //뒷부분 수정
     }catch   {
 
       console.log(err)

@@ -32,7 +32,14 @@ exports.write = async (req,res)=>{
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
     
-    
+    const files = req.files
+    console.log(files)
+    const filename = new Array()
+    if ( req.files.upload1 != undefined ) {filename.push(req.files.upload1[0].filename)}
+    if ( req.files.upload2 != undefined ) {filename.push(req.files.upload2[0].filename)}
+    if ( req.files.upload3 != undefined ) {filename.push(req.files.upload3[0].filename)}
+    if ( req.files.upload4 != undefined ) {filename.push(req.files.upload4[0].filename)}
+
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
@@ -43,8 +50,21 @@ exports.write = async (req,res)=>{
         errno:0
     }
     try{
+
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
+    
+        
+        const [result2] = await pool.execute(sql,prepare)
+        const b_idx = result2.insertId
+
+        // 이미지 파일이 있으면 추가
+        if ( files != [] )
+        files.forEach( async v => {
+            const sql2 = `INSERT INTO file(img,idx) VALUES ('${v}',${b_idx})`
+            await pool.execute(sql2)
+        });
+
         response = {
             ...response,
             result:{
@@ -52,7 +72,6 @@ exports.write = async (req,res)=>{
                 insertId:result.insertId
             }
         }
-        
     }catch(e){
         console.log(e.message)
         response={
