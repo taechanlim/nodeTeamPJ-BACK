@@ -91,7 +91,8 @@ exports.view = async (req,res)=>{
     const sql = `SELECT * FROM board WHERE idx=?`
     const sql2 = `UPDATE board SET hit=hit+1 WHERE idx=${index}`
     const sql3 = `SELECT * FROM user WHERE nickname='${nickname}'`
-
+    
+    
     const prepare = [index]
     let response = {
         errno:0
@@ -100,10 +101,12 @@ exports.view = async (req,res)=>{
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
                          await pool.execute(sql3)
+                        
         response = {
             ...response,
             result
         }
+        
     }catch(e){
             {
                 console.log(e.message)

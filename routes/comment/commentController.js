@@ -5,13 +5,17 @@ const pool = require('../../Database/db').pool
 //댓글 보기 
 exports.list = async(req,res)=>{
     
-    const sql = `SELECT * FROM comment`
+    const {intIdx} = req.body
+    
+
+    const sql = `SELECT nickname,recommend,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intIdx}'`
 
     let response = {
         errno: 1
     }
 try{
     const [result ] = await pool.execute(sql)
+                      
     response = {
         ...response,
         errno: 0,
@@ -27,10 +31,10 @@ try{
 //댓글작성
 exports.write = async (req, res) => {
     const { idx,comment } = req.body
-    console.log(req.body) 
+     
     
     const token = req.headers.cookie.split('=')[1]
-    console.log(token)
+    
     const [,payload,] = token.split('.')
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
