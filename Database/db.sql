@@ -58,7 +58,7 @@ CREATE TABLE comment (
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
     FOREIGN KEY (idx) REFERENCES board (idx),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
-);
+); 
 CREATE TABLE category (
     cate_idx INT PRIMARY KEY AUTO_INCREMENT,
     cate_name VARCHAR(32) NOT NULL
