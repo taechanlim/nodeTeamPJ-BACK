@@ -119,7 +119,7 @@ exports.profileimg = async (req,res)=>{
 exports.login = async (req,res)=>{
     const {userid,userpw} = req.body
 
-    const sql = `SELECT userid,nickname FROM user WHERE userid=? and userpw=?`
+    const sql = `SELECT userid,nickname,level FROM user WHERE userid=? and userpw=?`
     const prepare = [userid,userpw]
 
     try{
