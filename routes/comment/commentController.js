@@ -68,9 +68,8 @@ exports.write = async (req, res) => {
 //댓글삭제
 exports.delete = async (req, res) => {
     const { comment_idx } = req.body
-    console.log(req.body)
-    const index = parseInt(req.body.comment_idx)
-    const sql = `DELETE from comment WHERE comment_idx=${index}`
+    
+    const sql = `DELETE from comment WHERE comment_idx=${comment_idx}`
     const sql2 = `ALTER TABLE comment AUTO_INCREMENT=1`
     const sql3 = `SET @COUNT = 0`
     // const sql4 = `UPDATE comment SET idx = @COUNT:=@COUNT+1`
