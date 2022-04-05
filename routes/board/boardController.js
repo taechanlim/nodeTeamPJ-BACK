@@ -119,31 +119,52 @@ exports.view = async (req,res)=>{
     res.json(response)
 }
 
-// exports.likes = async (req,res)=>{
+exports.likes = async (req,res,next)=>{
     
-//     const sql = `UPDATE board SET likes=hit+1 WHERE idx=${index}`
+    const {idx} = req.body //board idx값
+    const {token} = req.cookies
+    const [,payload,] = token.split('.')
+    const decodingPayload = Buffer.from(payload,'base64').toString()
+    const nickname = JSON.parse(decodingPayload).nickname
+
+
+    const sql = `UPDATE likes SET like_num=like_num+1 WHERE idx=${idx}`
+    const sql2 = `UPDATE user SET like_check=1 WHERE nickname='${nickname}'`
+    const sql3 = `select like_check from user where nickname='${nickname}'`
     
-//     const prepare = [index]
-//     let response = {
-//         errno:0
-//     }
-//     try{
-//         const [result] = await pool.execute(sql,prepare)
+    
+    
+    let response = {
+        errno:0
+    }
+    try{
+        
+        const [result] = await pool.execute(sql3)
+        
+        if(result[0].like_check != 1){
+            next()
+        }else{
+            res.send('좋아요는 1번만 누를수있습니다')
+        }
+
+        const [result2] = await pool.execute(sql)
+                          await pool.execute(sql2)
+        
                          
-//         response = {
-//             ...response,
-//             result
-//         }
-//     }catch(e){
-//             {
-//                 console.log(e.message)
-//                 response={
-//                     errno:1
-//                 }
-//             }
-//     }
-//     res.json(response)
-// }
+        response = {
+            ...response,
+            result2
+        }
+    }catch(e){
+            {
+                console.log(e.message)
+                response={
+                    errno:1
+                }
+            }
+    }
+    res.json(response)
+}
 
 exports.update = async (req,res)=>{
     const {subject,content,idx} = req.body

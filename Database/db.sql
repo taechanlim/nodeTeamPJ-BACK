@@ -15,6 +15,7 @@ CREATE TABLE user(
     introduce varchar(100) not null,
     level int(1) DEFAULT 1 not null,
     active int(1) DEFAULT 1 not null,
+    like_check int(1) DEFAULT 0 not null,
     point int DEFAULT 0 not null,
     PRIMARY KEY (nickname,userid)
 );
@@ -76,11 +77,10 @@ CREATE TABLE subcategory (
 
 CREATE TABLE likes ( 
     like_idx INT PRIMARY KEY AUTO_INCREMENT,
-    nickname VARCHAR(30) NOT NULL,
     idx INT NOT NULL,
     like_num INT NOT NULL DEFAULT 0,
-    dislike_num INT NOT NULL DEFAULT 0,
     like_check INT NOT NULL DEFAULT 0,
+    nickname VARCHAR(32) NOT NULL,
     FOREIGN KEY (nickname) REFERENCES user (nickname),
     FOREIGN KEY (idx) REFERENCES board (idx)
 );
