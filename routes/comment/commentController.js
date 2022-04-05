@@ -64,12 +64,9 @@ exports.write = async (req, res) => {
 //댓글삭제
 exports.delete = async (req, res) => {
     const { idx,comment_idx } = req.body
-    console.log(req.body)
     
-    const sql = `DELETE from board WHERE idx=${idx} AND comment_idx=${comment_idx}`
-    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
-    const sql3 = `SET @COUNT = 0`
-    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    
+    const sql = `DELETE from comment WHERE idx=${idx} AND comment_idx=${comment_idx}`
     
     
     let response = {
@@ -77,9 +74,7 @@ exports.delete = async (req, res) => {
     }
     try{
         const [result] = await pool.execute(sql)
-                         await pool.execute(sql2)
-                         await pool.execute(sql3)
-                         await pool.execute(sql4)
+                         
 
         response = {
             ...response,
