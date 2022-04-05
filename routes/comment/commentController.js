@@ -8,6 +8,7 @@ exports.list = async(req,res)=>{
     const {intidx} = req.body
     
 
+
     const sql = `SELECT comment_idx,nickname,recommend,nickname,comment,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intidx}' ORDER BY comment_idx DESC`
 
     let response = {
@@ -63,18 +64,17 @@ exports.write = async (req, res) => {
 }
 //댓글삭제
 exports.delete = async (req, res) => {
-    const { idx,comment_idx } = req.body
-    
-    
+  
+    const { idx,comment_idx } = req.body  
+
     const sql = `DELETE from comment WHERE idx=${idx} AND comment_idx=${comment_idx}`
-    
     
     let response = {
         errno:0
     }
     try{
         const [result] = await pool.execute(sql)
-                         
+                        
 
         response = {
             ...response,
