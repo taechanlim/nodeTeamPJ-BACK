@@ -86,6 +86,56 @@ exports.userinfo_Delete = async(req,res)=>{
     
 }
 
+//게시판 리스트 , 게시글 숨기기
+
+exports.boardlist = async (req,res)=>{
+    const sql = `SELECT * FROM board ORDER BY idx DESC`
+    const sql2 = `SELECT count(idx) as total_record FROM board`
+    let response = {
+        errno:1
+    }
+
+    try{
+        const [result] = await pool.execute(sql)
+        const [[{total_record}]] = await pool.execute(sql2)
+        response = {
+            ...response,
+            total_record,
+            errno:0,
+            result
+        }
+        
+    }catch(e){
+        console.log(e.message)
+    }
+
+    res.json(response)
+}
+
+exports.boardEdit = async (req,res)=>{
+    // yn 은 deleteFlag 값
+    const {idx,yn} = req.body
+    const sql = `UPDATE board SET deleteFlag='${yn}' WHERE idx=${idx}`
+    
+    let response = {
+        errno:1
+    }
+
+    try{
+        const [result] = await pool.execute(sql)
+        
+        response = {
+            ...response,
+            errno:0,
+            result
+        }
+        
+    }catch(e){
+        console.log(e.message)
+    }
+
+    res.json(response)
+}
 
 //메인카테고리 추가 수정 삭제 각각
 exports.MainPlus = async(req,res)=>{
@@ -116,7 +166,6 @@ exports.MainPlus = async(req,res)=>{
 
     res.json(response)
 }
-
 
 
 exports.MainEdit = async(req,res)=>{
