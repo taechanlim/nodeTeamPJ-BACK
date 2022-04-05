@@ -5,21 +5,34 @@ const  {alertMove} = require('../../utils/alert.js')
 
 //회원정보보기
 
-// const adminInfo = async(req,res)=>{
-//     try{
-//         const {user} = req.session
-//         const {id} = req.query
-//         let sql = "SELECT * FROM user WHERE userid =?"
-//         const [rows,fields] = await promisePool.query(sql,[id])
-//         res.render('./admin/amdin_info.html', {
-//             rows : rows[0],
-//             user
-//         })
-//     }catch{
-//         console.log(err)
-//         res.status(500).send('<h1>Internet Server Error</h1>')
-//     }
-// }
+exports.adminMainPlus = async(req,res)=>{
+    const {cate_name} = req.body
+    console.log(cate_name)
+    const sql = `INSERT INTO category(cate_name) VALUES (?)`
+    const prepare = [cate_name]
+    let response = {
+        result:[],
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql,prepare)
+                        
+        response = {
+            ...response,
+            result:{
+                affectedRows:result.affectedRows,
+                insertId:result.insertId
+            }
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
+
+    res.json(response)
+}
 //관리자가 회원정보 수정 
 
 // const postAdminInfo = async (req, res) => {

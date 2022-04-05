@@ -5,10 +5,10 @@ const pool = require('../../Database/db').pool
 //댓글 보기 
 exports.list = async(req,res)=>{
     
-    const {intidx} = req.body
+    const {intIdx} = req.body
     
 
-    const sql = `SELECT comment_idx,nickname,recommend,nickname,comment,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intidx}' ORDER BY comment_idx DESC`
+    const sql = `SELECT comment_idx,nickname,recommend,nickname,comment,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intIdx}' ORDER BY comment_idx DESC`
 
     let response = {
         errno: 1
@@ -56,6 +56,7 @@ exports.write = async (req, res) => {
             result
         }
         res.json(response)
+
     } catch (err) {
         console.log(err)
         res.status(500).send('<h1>Internal Server Error</h1>')
@@ -80,33 +81,13 @@ exports.delete = async (req, res) => {
             ...response,
             result
         }
-    } catch (err) {
-        console.log(err)
-        res.status(500).send('<h1>Internal Server Error</h1>')
-    }
-}
-// //댓글 수정
-exports.update = async (req, res) => {
-    const { comment_idx, comment} = req.body
-    
-
-    let response = {
-        errno: 1
-    }
-    try {
-        console.log('업데이트실행')
-        let sql1 = `UPDATE comment SET comment='${comment}' where comment_idx=${comment_idx};`
-        const [result] = await pool.execute(sql1)
-        response = {
-            ...response,
-            errno: 0,
-        }
         res.json(response)
     } catch (err) {
         console.log(err)
         res.status(500).send('<h1>Internal Server Error</h1>')
     }
 }
+
 
 
 
