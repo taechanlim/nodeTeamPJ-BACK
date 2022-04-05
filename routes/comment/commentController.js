@@ -5,11 +5,10 @@ const pool = require('../../Database/db').pool
 //댓글 보기 
 exports.list = async(req,res)=>{
     
-    const {intidx} = req.body
+    const {intIdx} = req.body
     
 
-
-    const sql = `SELECT comment_idx,nickname,recommend,nickname,comment,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intidx}' ORDER BY comment_idx DESC`
+    const sql = `SELECT comment_idx,comment,recommend,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intIdx}'`
 
     let response = {
         errno: 1
@@ -32,7 +31,7 @@ try{
 //댓글작성
 exports.write = async (req, res) => {
     const { idx,comment } = req.body
-    
+     
     
     const token = req.headers.cookie.split('=')[1]
     
@@ -64,17 +63,23 @@ exports.write = async (req, res) => {
 }
 //댓글삭제
 exports.delete = async (req, res) => {
-  
-    const { idx,comment_idx } = req.body  
-
-    const sql = `DELETE from comment WHERE idx=${idx} AND comment_idx=${comment_idx}`
+    const { comment_idx } = req.body
+    console.log(req.body)
+    const index = parseInt(req.body.comment_idx)
+    const sql = `DELETE from comment WHERE comment_idx=${index}`
+    const sql2 = `ALTER TABLE comment AUTO_INCREMENT=1`
+    const sql3 = `SET @COUNT = 0`
+    // const sql4 = `UPDATE comment SET idx = @COUNT:=@COUNT+1`
+    
     
     let response = {
         errno:0
     }
     try{
         const [result] = await pool.execute(sql)
-                        
+                         await pool.execute(sql2)
+                         await pool.execute(sql3)
+                         // await pool.execute(sql4)
 
         response = {
             ...response,
