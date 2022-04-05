@@ -9,11 +9,12 @@ const adminController = require('./adminController.js')
 
 // router.post('/login',adminController.login)
 
-// router.post('/info',adminController.postAdminInfo)
-
-router.post('/adminMainPlus',adminController.adminMainPlus)
-router.post('/adminMainEdit',adminController.adminMainEdit)
-router.post('/adminMainDelete',adminController.adminMainDelete)
+router.post('/userinfo',adminController.userinfo)
+router.post('/userinfo_Edit',adminController.userinfo_Edit)
+router.post('/userinfo_Delete',adminController.userinfo_Delete)
+router.post('/MainPlus',adminController.MainPlus)
+router.post('/MainEdit',adminController.MainEdit)
+router.post('/MainDelete',adminController.MainDelete)
 
 // router.post('/adminSubPlus',adminController.adminSubplus)
 // router.post('/adminSubEdit',adminController.adminSubEdit)

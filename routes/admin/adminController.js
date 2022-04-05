@@ -5,24 +5,19 @@ const  {alertMove} = require('../../utils/alert.js')
 
 //회원정보보기
 
-exports.adminMainPlus = async(req,res)=>{
-    const {cate_name} = req.body
-    console.log(cate_name)
-    const sql = `INSERT INTO category(cate_name) VALUES (?)`
-    const prepare = [cate_name]
+exports.userinfo = async(req,res)=>{
+    const sql = `SELECT * FROM user`
+    
     let response = {
         result:[],
-        errno:0
+        errno:1
     }
     try{
-        const [result] = await pool.execute(sql,prepare)
-                        
+        const [result] = await pool.execute(sql) 
         response = {
             ...response,
-            result:{
-                affectedRows:result.affectedRows,
-                insertId:result.insertId
-            }
+            errno:0,
+            result
         }
     }catch(e){
         console.log(e.message)
@@ -32,29 +27,68 @@ exports.adminMainPlus = async(req,res)=>{
     }
 
     res.json(response)
+    console.log(response)
 }
 //관리자가 회원정보 수정 
+// 레벨과 활동상태 변경가능
+exports.userinfo_Edit = async(req,res)=>{
+    const {nickname,level,active} = req.body
+    const sql = `UPDATE user SET level=${level} WHERE nickname='${nickname}'`
+    const sql2 = `UPDATE user SET active=${active} WHERE nickname='${nickname}'`
+    
+    let response = {
+        result:[],
+        errno:1
+    }
+    try{
+        const [result] = await pool.execute(sql) 
+                         await pool.execute(sql2) 
+        response = {
+            ...response,
+            errno:0,
+            result
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
 
-// const postAdminInfo = async (req, res) => {
-//     try {
-//         const {level, access, userid} = req.body
-//         let sql = 'UPDATE user SET level=?, access=? WHERE userid=?'
-//         await promisePool.query(sql, [level, access, userid])
-//         res.send(alertMove('회원 정보가 수정되었습니다.', '/admin/list'))
-//     } catch {
-//         console.log(err)
-//         res.status(500).send('<h1>Internal Server Error</h1>')
-//     }
-// }
+    res.json(response)
+    console.log(response)
+}
+// 회원탈퇴시키기
+exports.userinfo_Delete = async(req,res)=>{
+    const {nickname} = req.body
+    const sql = `DELETE FROM user WHERE nickname='${nickname}'`
+    
+    let response = {
+        result:[],
+        errno:1
+    }
+    try{
+        const [result] = await pool.execute(sql) 
+                         
+        response = {
+            ...response,
+            errno:0,
+            result
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
 
-// const boardHidden = async(req,res)=>{
-
-
-// } 
+    res.json(response)
+    
+}
 
 
 //메인카테고리 추가 수정 삭제 각각
-exports.adminMainPlus = async(req,res)=>{
+exports.MainPlus = async(req,res)=>{
     const {cate_name} = req.body
     console.log(cate_name)
     const sql = `INSERT INTO category(cate_name) VALUES (?)`
@@ -85,7 +119,7 @@ exports.adminMainPlus = async(req,res)=>{
 
 
 
-exports.adminMainEdit = async(req,res)=>{
+exports.MainEdit = async(req,res)=>{
     const {cate_name} = req.body
     const {idx} = req.body
     console.log(cate_name)
@@ -118,7 +152,7 @@ exports.adminMainEdit = async(req,res)=>{
   
 
 
-exports.adminMainDelete = async(req,res)=>{
+exports.MainDelete = async(req,res)=>{
     const {idx} = req.body
     
     const sql = `DELETE from category WHERE cate_idx=${idx}`
