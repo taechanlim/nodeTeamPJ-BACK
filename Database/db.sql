@@ -31,8 +31,6 @@ CREATE TABLE board(
     cate_name varchar(20) not null,
     subject varchar(50) not null,
     content text not null,
-    thumbnail varchar(30) null,
-    img varchar(200) null,
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
     hit int DEFAULT 0 not null,
     likes int DEFAULT 0 not null,
@@ -41,7 +39,12 @@ CREATE TABLE board(
     PRIMARY KEY (idx,cate_name),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
-
+CREATE TABLE thumbnail(
+    thum_idx INT PRIMARY KEY AUTO_INCREMENT,
+    idx int not null,
+    thumnail varchar(50) NOT NULL,
+    FOREIGN KEY (idx) REFERENCES board (idx)
+)
 CREATE TABLE board_img (
     bi_idx INT PRIMARY KEY AUTO_INCREMENT,
     idx int not null,

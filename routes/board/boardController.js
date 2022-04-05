@@ -2,7 +2,7 @@ const pool = require('../../Database/db.js').pool
 
 
 exports.list = async (req,res)=>{
-    const sql = `SELECT idx,cate_name,thumbnail,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
+    const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
     const sql2 = `SELECT count(idx) as total_record FROM board`
     let response = {
         errno:1
@@ -31,19 +31,20 @@ exports.write = async (req,res)=>{
     const [,payload,] = token.split('.')
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
-    
-    const files = req.files
-    console.log(files)
-    const filename = new Array()
-    if ( req.files.upload1 != undefined ) {filename.push(req.files.upload1[0].filename)}
-    if ( req.files.upload2 != undefined ) {filename.push(req.files.upload2[0].filename)}
-    if ( req.files.upload3 != undefined ) {filename.push(req.files.upload3[0].filename)}
-    if ( req.files.upload4 != undefined ) {filename.push(req.files.upload4[0].filename)}
 
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
     const prepare = [cate_name,subject,content,nickname]
+
+    // const files = req.files
+    
+    // const filename = new Array()
+    // if ( req.files.upload1 != undefined ) {filename.push(req.files.upload1[0].filename)}
+    // if ( req.files.upload2 != undefined ) {filename.push(req.files.upload2[0].filename)}
+    // if ( req.files.upload3 != undefined ) {filename.push(req.files.upload3[0].filename)}
+    // if ( req.files.upload4 != undefined ) {filename.push(req.files.upload4[0].filename)}
+
     
     let response = {
         result:[],
@@ -55,15 +56,15 @@ exports.write = async (req,res)=>{
                          await pool.execute(sql2)
     
         
-        const [result2] = await pool.execute(sql,prepare)
-        const b_idx = result2.insertId
+        // const [result2] = await pool.execute(sql3,prepare)
+        // const b_idx = result2.insertId
 
-        // 이미지 파일이 있으면 추가
-        if ( files != [] )
-        files.forEach( async v => {
-            const sql2 = `INSERT INTO board_img(img,idx) VALUES ('${v}',${b_idx})`
-            await pool.execute(sql2)
-        });
+        // // 이미지 파일이 있으면 추가
+        // if ( files != [] )
+        // files.forEach( async v => {
+        //     const sql3 = `INSERT INTO board_img(img,idx) VALUES ('${v}',${b_idx})`
+        //     await pool.execute(sql2)
+        // });
 
         response = {
             ...response,
@@ -201,7 +202,7 @@ exports.delete = async (req,res)=>{
 }
 
 exports.pop = async (req,res) => {
-    const sql = `SELECT idx,cate_name,thumbnail,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
+    const sql = `SELECT idx,cate_name,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
     const prepare = []
 
     let response = {
