@@ -232,31 +232,92 @@ exports.MainDelete = async(req,res)=>{
   
 
 //서브카테고리 추가 수정 삭제 수정해야됨
-// const adminSubPlus = async(req,res)=>{
-//     try{
-//         res.send(alertMove('카테고리가 추가되었습니다.',`/board/view/?idx= $[idx]`))
-//       }catch{
-//           console.log(err)
-//           res.status(500).send('<h1>Internet Server Error</h1>')
-//       }
-// }
+exports.SubPlus = async(req,res)=>{
+    const {cate_idx,subcate_name} = req.body
+    
+    const sql = `INSERT INTO subcategory(cate_idx,subcate_name) VALUES (?,?)`
+    const prepare = [cate_idx,subcate_name]
+    let response = {
+        result:[],
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql,prepare)
+                        
+        response = {
+            ...response,
+            result:{
+                affectedRows:result.affectedRows,
+                insertId:result.insertId
+            }
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
 
-// const adminSubEdit = async(req,res)=>{
-//     try{
-//         res.send(alertMove('카테고리가 수정되었습니다.',`/board/view/?idx= $[idx]`))
-//       }catch{
-//           console.log(err)
-//           res.status(500).send('<h1>Internet Server Error</h1>')
-//       }
-// }
+    res.json(response)
+}
 
-// const adminSubDelete = async(req,res)=>{
-//     try{
-//         res.send(alertMove('카테고리가 삭제되었습니다.',`/board/view/?idx= $[idx]`))
-//       }catch{
-//           console.log(err)
-//           res.status(500).send('<h1>Internet Server Error</h1>')
-//       }
-// }
+exports.SubEdit = async(req,res)=>{
+    const {subcate_name} = req.body
+    const {subcate_idx} = req.body
+    console.log(subcate_idx)
+    
+    
+    const sql = `UPDATE subcategory SET subcate_name='${subcate_name}' WHERE subcate_idx=${subcate_idx}`
+    
+    let response = {
+        result:[],
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql)
+                        
+        response = {
+            ...response,
+            result:{
+                affectedRows:result.affectedRows,
+                insertId:result.insertId
+            }
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
 
-//admin
+    res.json(response)
+}
+
+exports.SubDelete = async(req,res)=>{
+    const {subcate_idx} = req.body
+    
+    const sql = `DELETE from subcategory WHERE subcate_idx=${subcate_idx}`
+    
+    let response = {
+        result:[],
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql)
+                        
+        response = {
+            ...response,
+            result:{
+                affectedRows:result.affectedRows,
+                insertId:result.insertId
+            }
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
+
+    res.json(response)
+}

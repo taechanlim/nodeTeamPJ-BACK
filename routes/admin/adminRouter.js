@@ -17,15 +17,15 @@ router.post('/userinfo_Delete',adminController.userinfo_Delete)
 router.post('/boardlist',adminController.boardlist)
 router.post('/boardEdit',adminController.boardEdit)
 
-//admin category
+//admin Maincategory
 router.post('/MainPlus',adminController.MainPlus)
 router.post('/MainEdit',adminController.MainEdit)
 router.post('/MainDelete',adminController.MainDelete)
 
-
-// router.post('/adminSubPlus',adminController.adminSubplus)
-// router.post('/adminSubEdit',adminController.adminSubEdit)
-// router.post('/adminSubDelete',adminController.adminSubDelete)
+//admin Subcategory
+router.post('/SubPlus',adminController.SubPlus)
+router.post('/SubEdit',adminController.SubEdit)
+router.post('/SubDelete',adminController.SubDelete)
 
 
 
