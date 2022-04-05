@@ -7,7 +7,7 @@ router.post('/join',upload.single('img'),userController.join)
 router.post('/profileimg',userController.profileimg)
 router.post('/idcheck',userController.idcheck)
 router.post('/login',userController.login)
-router.post('welcome',userController.welcome)
+router.post('/welcome',userController.welcome)
 
 
 
