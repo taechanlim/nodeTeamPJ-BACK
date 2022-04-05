@@ -8,7 +8,7 @@ exports.list = async(req,res)=>{
     const {intIdx} = req.body
     
 
-    const sql = `SELECT nickname,recommend,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intIdx}'`
+    const sql = `SELECT comment_idx,comment,recommend,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date FROM comment WHERE idx='${intIdx}'`
 
     let response = {
         errno: 1
@@ -65,11 +65,11 @@ exports.write = async (req, res) => {
 exports.delete = async (req, res) => {
     const { comment_idx } = req.body
     console.log(req.body)
-    const index = req.body.comment_idx
-    const sql = `DELETE from board WHERE comment_idx=${index}`
-    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
+    const index = parseInt(req.body.comment_idx)
+    const sql = `DELETE from comment WHERE comment_idx=${index}`
+    const sql2 = `ALTER TABLE comment AUTO_INCREMENT=1`
     const sql3 = `SET @COUNT = 0`
-    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    // const sql4 = `UPDATE comment SET idx = @COUNT:=@COUNT+1`
     
     
     let response = {
@@ -79,7 +79,7 @@ exports.delete = async (req, res) => {
         const [result] = await pool.execute(sql)
                          await pool.execute(sql2)
                          await pool.execute(sql3)
-                         await pool.execute(sql4)
+                         // await pool.execute(sql4)
 
         response = {
             ...response,
