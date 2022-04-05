@@ -61,7 +61,7 @@ exports.write = async (req,res)=>{
         // 이미지 파일이 있으면 추가
         if ( files != [] )
         files.forEach( async v => {
-            const sql2 = `INSERT INTO file(img,idx) VALUES ('${v}',${b_idx})`
+            const sql2 = `INSERT INTO board_img(img,idx) VALUES ('${v}',${b_idx})`
             await pool.execute(sql2)
         });
 

@@ -150,6 +150,32 @@ exports.login = async (req,res)=>{
     }
 }
 
+exports.welcome = async (req,res)=>{
+    const {token} = req.cookies
+    const [,payload,] = token.split('.')
+    const decodingPayload = Buffer.from(payload,'base64').toString()
+    const nickname = JSON.parse(decodingPayload).nickname
+
+    const sql = `SELECT * from user WHERE nickname='${nickname}'`
+
+    try{
+        const [result] = await pool.execute(sql)
+
+        const response = {
+            result,
+            errno:0,
+        }
+        res.json(response)
+
+    }catch(e){
+        const response = {
+            result:[],
+            errno:1,
+        }
+        res.json(response)
+    }
+}
+
 //쓴 게시글 보기 수정해야댐
 const getBoard = async (req, res) => {
     try {
