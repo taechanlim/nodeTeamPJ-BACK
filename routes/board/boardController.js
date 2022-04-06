@@ -152,6 +152,58 @@ exports.likes = async (req,res)=>{
     }
 }
 
+exports.likescancle = async (req,res)=>{
+    const {idx} = req.body //board idx값
+    const {token} = req.cookies
+    const [,payload,] = token.split('.')
+    const decodingPayload = Buffer.from(payload,'base64').toString()
+    const nickname = JSON.parse(decodingPayload).nickname
+    
+    const sql = `INSERT INTO likes(idx,nickname) VALUES(${idx},'${nickname}')`
+    const sql2 = `UPDATE likes SET like_num=like_num-1 WHERE idx=${idx}`
+    const sql3 = `UPDATE user SET like_check=0 WHERE nickname='${nickname}'`
+    const sql4 = `UPDATE board SET likes=likes-1 WHERE idx=${idx}`
+    const sql5 = `select like_check from user where nickname='${nickname}'`
+    
+      
+    let response = {
+        errno:0
+    }
+    try{
+        
+        const [result] = await pool.execute(sql5)
+        
+        
+        if(result[0].like_check == idx){
+            const [result2] = await pool.execute(sql)
+                              await pool.execute(sql2)
+                              await pool.execute(sql3)
+                              await pool.execute(sql4)
+
+            response = {
+                ...response,
+                result2
+            }
+
+            res.json(response)
+            
+        }else{
+            response = {
+                errno:1
+            }
+            res.json(response)
+        }
+
+    }catch(e){
+            {
+                console.log(e.message)
+                response={
+                    errno:1
+                }
+            }
+    }
+}
+
 exports.update = async (req,res)=>{
     const {subject,content,idx} = req.body
     const sql = `UPDATE board SET subject='${subject}',content='${content}' WHERE idx=${idx}`

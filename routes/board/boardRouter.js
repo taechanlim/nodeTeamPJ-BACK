@@ -6,6 +6,7 @@ router.post('/list',boardController.list);
 router.post('/write',boardController.write);
 router.post('/view',boardController.view);
 router.post('/likes',boardController.likes);
+router.post('/likescancle',boardController.likescancle);
 router.post('/update',boardController.update);
 router.post('/delete',boardController.delete); 
 
