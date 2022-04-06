@@ -31,21 +31,13 @@ exports.write = async (req,res)=>{
     const [,payload,] = token.split('.')
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
-
+    console.log(req.body)
+    
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
     const prepare = [cate_name,subject,content,nickname]
 
-    // const files = req.files
-    
-    // const filename = new Array()
-    // if ( req.files.upload1 != undefined ) {filename.push(req.files.upload1[0].filename)}
-    // if ( req.files.upload2 != undefined ) {filename.push(req.files.upload2[0].filename)}
-    // if ( req.files.upload3 != undefined ) {filename.push(req.files.upload3[0].filename)}
-    // if ( req.files.upload4 != undefined ) {filename.push(req.files.upload4[0].filename)}
-
-    
     let response = {
         result:[],
         errno:0
@@ -54,17 +46,6 @@ exports.write = async (req,res)=>{
 
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
-    
-        
-        // const [result2] = await pool.execute(sql3,prepare)
-        // const b_idx = result2.insertId
-
-        // // 이미지 파일이 있으면 추가
-        // if ( files != [] )
-        // files.forEach( async v => {
-        //     const sql3 = `INSERT INTO board_img(img,idx) VALUES ('${v}',${b_idx})`
-        //     await pool.execute(sql2)
-        // });
 
         response = {
             ...response,

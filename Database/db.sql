@@ -98,9 +98,3 @@ CREATE TABLE scrap(
 );
 
 
-CREATE TABLE board_img (
-    bi_idx INT PRIMARY KEY AUTO_INCREMENT,
-    idx int not null,
-    img varchar(100) NOT NULL,
-    FOREIGN KEY (idx) REFERENCES board (idx)
-);
