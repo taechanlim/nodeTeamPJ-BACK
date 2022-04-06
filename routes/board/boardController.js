@@ -1,5 +1,5 @@
 const pool = require('../../Database/db.js').pool
-const {alertMove} = require('../../utils/alert.js')
+
 
 exports.list = async (req,res)=>{
     const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
@@ -121,7 +121,7 @@ exports.likes = async (req,res)=>{
         
         const [result] = await pool.execute(sql5)
         console.log(result[0].like_check)
-        console.log(idx)
+        
         if(result[0].like_check != idx){
             const [result2] = await pool.execute(sql)
                               await pool.execute(sql2)
