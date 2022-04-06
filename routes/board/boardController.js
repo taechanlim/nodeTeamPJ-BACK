@@ -1,5 +1,5 @@
 const pool = require('../../Database/db.js').pool
-
+const {alertMove} = require('../../utils/alert.js')
 
 exports.list = async (req,res)=>{
     const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
@@ -32,7 +32,7 @@ exports.write = async (req,res)=>{
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
     console.log(req.body)
-    
+
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
     
@@ -100,42 +100,48 @@ exports.view = async (req,res)=>{
     res.json(response)
 }
 
-exports.likes = async (req,res,next)=>{
-    
+exports.likes = async (req,res)=>{
     const {idx} = req.body //board idx값
     const {token} = req.cookies
     const [,payload,] = token.split('.')
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
-
-
-    const sql = `UPDATE likes SET like_num=like_num+1 WHERE idx=${idx}`
-    const sql2 = `UPDATE user SET like_check=1 WHERE nickname='${nickname}'`
-    const sql3 = `select like_check from user where nickname='${nickname}'`
     
+    const sql = `INSERT INTO likes(idx,nickname) VALUES(${idx},'${nickname}')`
+    const sql2 = `UPDATE likes SET like_num=like_num+1 WHERE idx=${idx}`
+    const sql3 = `UPDATE user SET like_check=${idx} WHERE nickname='${nickname}'`
+    const sql4 = `UPDATE board SET likes=likes+1 WHERE idx=${idx}`
+    const sql5 = `select like_check from user where nickname='${nickname}'`
     
-    
+      
     let response = {
         errno:0
     }
     try{
         
-        const [result] = await pool.execute(sql3)
-        
-        if(result[0].like_check != 1){
-            next()
+        const [result] = await pool.execute(sql5)
+        console.log(result[0].like_check)
+        console.log(idx)
+        if(result[0].like_check != idx){
+            const [result2] = await pool.execute(sql)
+                              await pool.execute(sql2)
+                              await pool.execute(sql3)
+                              await pool.execute(sql4)
+
+            response = {
+                ...response,
+                result2
+            }
+
+            res.json(response)
+            
         }else{
-            res.send('좋아요는 1번만 누를수있습니다')
+            response = {
+                errno:1
+            }
+            res.json(response)
         }
 
-        const [result2] = await pool.execute(sql)
-                          await pool.execute(sql2)
-        
-                         
-        response = {
-            ...response,
-            result2
-        }
     }catch(e){
             {
                 console.log(e.message)
@@ -144,7 +150,6 @@ exports.likes = async (req,res,next)=>{
                 }
             }
     }
-    res.json(response)
 }
 
 exports.update = async (req,res)=>{
