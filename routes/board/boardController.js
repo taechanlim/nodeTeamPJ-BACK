@@ -74,6 +74,7 @@ exports.view = async (req,res)=>{
     
     const idx = req.query
     const {nickname} = req.query
+    
     const index = parseInt(idx.idx)
     const realnickname = nickname[1]
     const sql = `SELECT * FROM board WHERE idx=?`
