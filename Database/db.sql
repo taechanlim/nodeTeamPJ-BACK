@@ -15,7 +15,8 @@ CREATE TABLE user(
     introduce varchar(100) not null,
     level int(1) DEFAULT 1 not null,
     active int(1) DEFAULT 1 not null,
-    like_check int(1) DEFAULT 0 not null,
+    like_check int DEFAULT 0 not null,
+    recommend int DEFAULT 0 not null,
     point int DEFAULT 0 not null,
     PRIMARY KEY (nickname,userid)
 );
