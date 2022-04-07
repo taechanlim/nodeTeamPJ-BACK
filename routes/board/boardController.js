@@ -26,18 +26,21 @@ exports.list = async (req,res)=>{
 }
 
 exports.write = async (req,res)=>{
-    const {cate_name,subject,content} = req.body
+    const {main_category,subject,content} = req.body
     const {token} = req.cookies
     const [,payload,] = token.split('.')
     const decodingPayload = Buffer.from(payload,'base64').toString()
     const nickname = JSON.parse(decodingPayload).nickname
-    console.log(req.body)
+    
 
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
+    const sql3 = `INSERT INTO category(cate_name) VALUES (?)`
     
-    const prepare = [cate_name,subject,content,nickname]
-
+    
+    const prepare = [main_category,subject,content,nickname]
+    const prepare2 = [main_category]
+    
     let response = {
         result:[],
         errno:0
@@ -46,7 +49,11 @@ exports.write = async (req,res)=>{
 
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
-
+                         await pool.execute(sql3,prepare2)
+                         
+                         
+                         
+        
         response = {
             ...response,
             result:{
@@ -60,7 +67,6 @@ exports.write = async (req,res)=>{
             errno:1
         }
     }
-
     res.json(response)
 }
 
@@ -231,9 +237,8 @@ exports.update = async (req,res)=>{
 exports.delete = async (req,res)=>{
     const index = req.body.idx
     const sql = `DELETE from board WHERE idx=${index}`
-    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
-    const sql3 = `SET @COUNT = 0`
-    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
+    const sql2 = `DELETE from category WHERE idx=${index}`
+    
     
     
     let response = {
@@ -242,8 +247,7 @@ exports.delete = async (req,res)=>{
     try{
         const [result] = await pool.execute(sql)
                          await pool.execute(sql2)
-                         await pool.execute(sql3)
-                         await pool.execute(sql4)
+                         
 
         response = {
             ...response,
