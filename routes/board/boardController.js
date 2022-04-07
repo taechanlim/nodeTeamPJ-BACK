@@ -290,18 +290,19 @@ exports.pop = async (req,res) => {
 }
 
 exports.search = async (req,res) => {
-    console.log(req.body.input)
+    
     const word = req.body.input
 
-    const sql = `SELECT idx,subject,content,nickname FROM board WHERE content LIKE '${word}%';`
+    const sql = `SELECT idx,subject,content,nickname FROM board WHERE content LIKE '%${word}%'`
     // const prepare = [word]
-
+    const sql2 = `SELECT idx,subject,content,nickname FROM board WHERE subject LIKE '%${word}%'`
     let response = {
         errno:0
     }
 
     try{
         const [result] = await pool.execute(sql)
+                         await pool.execute(sql2)
         // console.log(result)
         response = {
             ...response,
