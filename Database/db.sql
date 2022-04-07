@@ -30,7 +30,7 @@ CREATE TABLE user_img (
 
 CREATE TABLE board(  
     idx int auto_increment not null,
-    cate_name varchar(20) not null,
+    cate_name VARCHAR(30) not null,
     subject varchar(50) not null,
     content text not null,
     date timestamp DEFAULT CURRENT_TIMESTAMP not null,
@@ -38,7 +38,7 @@ CREATE TABLE board(
     likes int DEFAULT 0 not null,
     nickname varchar(15) null,
     deleteFlag char(1) DEFAULT 'y',
-    PRIMARY KEY (idx,cate_name),
+    PRIMARY KEY (idx),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
 CREATE TABLE thumbnail(
@@ -65,15 +65,16 @@ CREATE TABLE comment (
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 ); 
 CREATE TABLE category (
-    cate_idx INT PRIMARY KEY AUTO_INCREMENT,
-    cate_name VARCHAR(32) NOT NULL
+    idx INT AUTO_INCREMENT,
+    cate_name VARCHAR(32) NOT NULL,
+    PRIMARY KEY (idx)
 );
 
 CREATE TABLE subcategory (
     subcate_idx INT PRIMARY KEY AUTO_INCREMENT,
-    cate_idx INT NOT NULL,
+    idx INT NOT NULL,
     subcate_name VARCHAR(32) NOT NULL,
-    FOREIGN KEY (cate_idx) REFERENCES category (cate_idx)
+    FOREIGN KEY (idx) REFERENCES category (idx)
 );
 
 CREATE TABLE likes ( 
