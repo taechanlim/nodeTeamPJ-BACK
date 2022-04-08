@@ -41,18 +41,18 @@ CREATE TABLE board(
     PRIMARY KEY (idx),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
-CREATE TABLE thumbnail(
-    thum_idx INT PRIMARY KEY AUTO_INCREMENT,
-    idx int not null,
-    thumnail varchar(50) NOT NULL,
-    FOREIGN KEY (idx) REFERENCES board (idx)
-)
-CREATE TABLE board_img (
-    bi_idx INT PRIMARY KEY AUTO_INCREMENT,
-    idx int not null,
-    img varchar(300) NOT NULL,
-    FOREIGN KEY (idx) REFERENCES board (idx)
-);
+-- CREATE TABLE thumbnail(
+--     thum_idx INT PRIMARY KEY AUTO_INCREMENT,
+--     idx int not null,
+--     thumnail varchar(50) NOT NULL,
+--     FOREIGN KEY (idx) REFERENCES board (idx)
+-- )
+-- CREATE TABLE board_img (
+--     bi_idx INT PRIMARY KEY AUTO_INCREMENT,
+--     idx int not null,
+--     img varchar(300) NOT NULL,
+--     FOREIGN KEY (idx) REFERENCES board (idx)
+-- );
 
 CREATE TABLE comment (
     comment_idx INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,12 +70,12 @@ CREATE TABLE category (
     PRIMARY KEY (idx)
 );
 
-CREATE TABLE subcategory (
-    subcate_idx INT PRIMARY KEY AUTO_INCREMENT,
-    idx INT NOT NULL,
-    subcate_name VARCHAR(32) NOT NULL,
-    FOREIGN KEY (idx) REFERENCES category (idx)
-);
+-- CREATE TABLE subcategory (
+--     subcate_idx INT PRIMARY KEY AUTO_INCREMENT,
+--     idx INT NOT NULL,
+--     subcate_name VARCHAR(32) NOT NULL,
+--     FOREIGN KEY (idx) REFERENCES category (idx)
+-- );
 
 CREATE TABLE likes ( 
     like_idx INT PRIMARY KEY AUTO_INCREMENT,
@@ -87,16 +87,16 @@ CREATE TABLE likes (
     FOREIGN KEY (idx) REFERENCES board (idx)
 );
 
-CREATE TABLE HashTag(
-    tag_id INT PRIMARY KEY,
-    keywords varchar(20) NOT NULL,
-    bid INT NOT NULL
-);
+-- CREATE TABLE HashTag(
+--     tag_id INT PRIMARY KEY,
+--     keywords varchar(20) NOT NULL,
+--     bid INT NOT NULL
+-- );
 
-CREATE TABLE scrap(
-    scrap_idx INT PRIMARY KEY AUTO_INCREMENT,
-    s_userid VARCHAR(30) NOT NULL,
-    bid INT NOT NULL
-);
+-- CREATE TABLE scrap(
+--     scrap_idx INT PRIMARY KEY AUTO_INCREMENT,
+--     s_userid VARCHAR(30) NOT NULL,
+--     bid INT NOT NULL
+-- );
 
 
