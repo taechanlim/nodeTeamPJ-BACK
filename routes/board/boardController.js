@@ -29,6 +29,27 @@ exports.list = async (req,res)=>{
 
     res.json(response)
 }
+exports.list_ranking = async (req,res)=>{
+    const sql = `SELECT nickname,point from user order by point desc limit 10;`
+    let response = {
+        errno:1
+    }
+
+    try{
+        const [result] = await pool.execute(sql)
+        
+        response = {
+            ...response,
+            errno:0,
+            result,
+        }
+        
+    }catch(e){
+        console.log(e.message)
+    }
+
+    res.json(response)
+}
 
 exports.write = async (req,res)=>{
     const {main_category,subject,content} = req.body
