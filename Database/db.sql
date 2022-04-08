@@ -77,6 +77,10 @@ CREATE TABLE category (
 --     FOREIGN KEY (idx) REFERENCES category (idx)
 -- );
 
+INSERT INTO category(cate_name) VALUES('자유');
+INSERT INTO category(cate_name) VALUES('유머');
+INSERT INTO category(cate_name) VALUES('코인');
+
 CREATE TABLE likes ( 
     like_idx INT PRIMARY KEY AUTO_INCREMENT,
     idx INT NOT NULL,

@@ -2,20 +2,25 @@ const pool = require('../../Database/db.js').pool
 
 
 exports.list = async (req,res)=>{
-    const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
+    const {cate_name} = req.body
+    
+    const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' AND cate_name='${cate_name}' ORDER BY idx DESC`
     const sql2 = `SELECT count(idx) as total_record FROM board`
+    const sql3 = `SELECT * FROM category`
     let response = {
         errno:1
     }
 
     try{
         const [result] = await pool.execute(sql)
+        const [result2] = await pool.execute(sql3)
         const [[{total_record}]] = await pool.execute(sql2)
         response = {
             ...response,
             total_record,
             errno:0,
-            result
+            result,
+            result2
         }
         
     }catch(e){
@@ -35,7 +40,7 @@ exports.write = async (req,res)=>{
 
     const sql = `INSERT INTO board(cate_name,subject,content,nickname) VALUES (?,?,?,?)`
     const sql2 = `UPDATE user SET point=point+10 WHERE nickname='${nickname}'`
-    const sql3 = `INSERT INTO category(cate_name) VALUES (?)`
+    
     
     
     const prepare = [main_category,subject,content,nickname]
@@ -49,7 +54,7 @@ exports.write = async (req,res)=>{
 
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
-                         await pool.execute(sql3,prepare2)
+                         
                          
                          
                          
@@ -69,7 +74,30 @@ exports.write = async (req,res)=>{
     }
     res.json(response)
 }
+exports.category = async (req,res) => {
+    const sql = `SELECT * FROM category`
+    let response = {
+        errno:1
+    }
+    try{
+        const [result] = await pool.execute(sql)
+                        
+        response = {
+            ...response,
+            result
+        }
+        
+    }catch(e){
+            {
+                console.log(e.message)
+                response={
+                    errno:1
+                }
+            }
+    }
+    res.json(response)
 
+}
 exports.view = async (req,res)=>{
     
     const idx = req.query
@@ -238,7 +266,9 @@ exports.update = async (req,res)=>{
 exports.delete = async (req,res)=>{
     const index = req.body.idx
     const sql = `DELETE from board WHERE idx=${index}`
-    const sql2 = `DELETE from category WHERE idx=${index}`
+    const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
+    const sql3 = `SET @COUNT = 0`
+    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1;`
     
     
     
@@ -248,6 +278,8 @@ exports.delete = async (req,res)=>{
     try{
         const [result] = await pool.execute(sql)
                          await pool.execute(sql2)
+                         await pool.execute(sql3)
+                         await pool.execute(sql4)
                          
 
         response = {
