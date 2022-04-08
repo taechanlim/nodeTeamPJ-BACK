@@ -3,6 +3,7 @@ const router = express.Router();
 const boardController = require('./boardController.js')
 
 router.post('/list',boardController.list);
+router.post('/list_ranking',boardController.list_ranking)
 router.post('/write',boardController.write);
 router.post('/view',boardController.view);
 router.post('/view_user',boardController.view_user)
