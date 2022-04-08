@@ -8,6 +8,8 @@ router.post('/profileimg',userController.profileimg)
 router.post('/idcheck',userController.idcheck)
 router.post('/login',userController.login)
 router.post('/welcome',userController.welcome)
+router.post('/mypageuser',userController.mypageuser)
+router.post('/mypageboard',userController.mypageboard)
 
 
 

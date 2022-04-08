@@ -5,6 +5,7 @@ const boardController = require('./boardController.js')
 router.post('/list',boardController.list);
 router.post('/write',boardController.write);
 router.post('/view',boardController.view);
+router.post('/view_user',boardController.view_user)
 router.post('/category',boardController.category)
 router.post('/likes',boardController.likes);
 router.post('/likescancle',boardController.likescancle);

@@ -44,7 +44,7 @@ exports.write = async (req,res)=>{
     
     
     const prepare = [main_category,subject,content,nickname]
-    const prepare2 = [main_category]
+    
     
     let response = {
         result:[],
@@ -105,6 +105,7 @@ exports.view = async (req,res)=>{
     
     const index = parseInt(idx.idx)
     const realnickname = nickname[1]
+    
     const sql = `SELECT * FROM board WHERE idx=?`
     const sql2 = `UPDATE board SET hit=hit+1 WHERE idx=${index}`
     const sql3 = `SELECT * FROM user WHERE nickname='${realnickname}'`
@@ -118,6 +119,35 @@ exports.view = async (req,res)=>{
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
                          await pool.execute(sql3)
+                        
+        response = {
+            ...response,
+            result
+        }
+        
+    }catch(e){
+            {
+                console.log(e.message)
+                response={
+                    errno:1
+                }
+            }
+    }
+    res.json(response)
+}
+
+exports.view_user = async (req,res)=>{
+    const {nickname} = req.query
+    const realnickname = nickname[1]
+    
+    const sql = `SELECT * FROM user WHERE nickname='${realnickname}'`
+    
+
+    let response = {
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql)
                         
         response = {
             ...response,
