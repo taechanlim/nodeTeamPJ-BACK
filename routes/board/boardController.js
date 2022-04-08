@@ -30,7 +30,7 @@ exports.list = async (req,res)=>{
     res.json(response)
 }
 exports.list_ranking = async (req,res)=>{
-    const sql = `SELECT nickname,point from user order by point desc limit 10;`
+    const sql = `SELECT nickname,point from user order by point desc limit 5`
     let response = {
         errno:1
     }
