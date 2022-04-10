@@ -51,12 +51,13 @@ exports.join = async (req,res)=>{
     
         }catch(e){
         console.log(e.message)
+        console.log(e)
         const response = {
             result:{
                 row:0,
                 id:0
             },
-            errno:1,
+            errno:e.errno,
         }
         res.json(response)
         }
