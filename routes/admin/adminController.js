@@ -145,7 +145,6 @@ exports.MainList = async(req,res)=>{
     }
     try{
         const [result] = await pool.execute(sql)
-        console.log(result)
         response = {
             ...response,
             result
@@ -224,9 +223,9 @@ exports.MainEdit = async(req,res)=>{
 
 
 exports.MainDelete = async(req,res)=>{
-    const {idx} = req.body
-    
-    const sql = `DELETE from category WHERE cate_idx=${idx}`
+    const {cate_name} = req.body
+    // console.log(cate_name)
+    const sql = `DELETE from category WHERE cate_name='${cate_name}'`
     
     let response = {
         result:[],
