@@ -11,7 +11,7 @@ exports.list = async (req,res)=>{
     let response = {
         errno:1
     }
-    console.log(cate_name)
+    // console.log(cate_name)
     try{
         if (cate_name === 'undefined' || cate_name ==='전체'){
         const [result] = await pool.execute(sql4)
@@ -91,10 +91,6 @@ exports.write = async (req,res)=>{
         const [result] = await pool.execute(sql,prepare)
                          await pool.execute(sql2)
                          
-                         
-                         
-                         
-        
         response = {
             ...response,
             result:{
@@ -221,7 +217,7 @@ exports.likes = async (req,res)=>{
     try{
         
         const [result] = await pool.execute(sql5)
-        console.log(result[0].like_check)
+        // console.log(result[0].like_check)
         
         if(result[0].like_check != idx){
             const [result2] = await pool.execute(sql)
@@ -334,7 +330,7 @@ exports.delete = async (req,res)=>{
     const sql = `DELETE from board WHERE idx=${index}`
     const sql2 = `ALTER TABLE board AUTO_INCREMENT=1`
     const sql3 = `SET @COUNT = 0`
-    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1;`
+    const sql4 = `UPDATE board SET idx = @COUNT:=@COUNT+1`
     
     
     

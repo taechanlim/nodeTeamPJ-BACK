@@ -41,6 +41,18 @@ CREATE TABLE board(
     PRIMARY KEY (idx),
     FOREIGN KEY (nickname) REFERENCES user (nickname)
 );
+
+
+CREATE TABLE noticeboard(  
+    idx int auto_increment not null,
+    subject varchar(50) not null,
+    content text not null,
+    date timestamp DEFAULT CURRENT_TIMESTAMP not null,
+    hit int DEFAULT 0 not null,
+    nickname varchar(15) null,
+    PRIMARY KEY (idx),
+    FOREIGN KEY (nickname) REFERENCES user (nickname)
+);
 -- CREATE TABLE thumbnail(
 --     thum_idx INT PRIMARY KEY AUTO_INCREMENT,
 --     idx int not null,
