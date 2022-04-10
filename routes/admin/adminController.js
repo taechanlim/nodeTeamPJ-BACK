@@ -138,9 +138,31 @@ exports.boardEdit = async (req,res)=>{
 }
 
 //메인카테고리 추가 수정 삭제 각각
+exports.MainList = async(req,res)=>{
+    const sql = `SELECT * from category`
+    let response = {
+        errno:0
+    }
+    try{
+        const [result] = await pool.execute(sql)
+        console.log(result)
+        response = {
+            ...response,
+            result
+        }
+    }catch(e){
+        console.log(e.message)
+        response={
+            errno:1
+        }
+    }
+
+    res.json(response)
+}
+
+
 exports.MainPlus = async(req,res)=>{
     const {cate_name} = req.body
-    console.log(cate_name)
     const sql = `INSERT INTO category(cate_name) VALUES (?)`
     const prepare = [cate_name]
     let response = {

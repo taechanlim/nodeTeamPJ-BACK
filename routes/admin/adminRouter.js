@@ -18,6 +18,7 @@ router.post('/boardlist',adminController.boardlist)
 router.post('/boardEdit',adminController.boardEdit)
 
 //admin Maincategory
+router.post('/MainList',adminController.MainList)
 router.post('/MainPlus',adminController.MainPlus)
 router.post('/MainEdit',adminController.MainEdit)
 router.post('/MainDelete',adminController.MainDelete)
