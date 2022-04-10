@@ -359,8 +359,9 @@ exports.delete = async (req,res)=>{
     res.json(response)
 }
 
+// 메인화면 헤더-보드 팝업시
 exports.pop = async (req,res) => {
-    const sql = `SELECT idx,cate_name,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board ORDER BY idx DESC`
+    const sql = `SELECT idx,cate_name,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%dT%T') as date,hit,likes FROM board ORDER BY idx DESC`
     const prepare = []
 
     let response = {
@@ -384,25 +385,40 @@ exports.pop = async (req,res) => {
     res.json(response)
 }
 
+// 메인화면 헤더-SearchInput 입력시
 exports.search = async (req,res) => {
     
     const word = req.body.input
 
-    const sql = `SELECT idx,subject,content,nickname FROM board WHERE content LIKE '%${word}%'`
+    const sql = `SELECT idx,cate_name,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%dT%h:%i:%s') as date,hit,likes FROM board WHERE subject LIKE '%${word}%'`
+    const sql2 = `SELECT idx,cate_name,subject,content,nickname,DATE_FORMAT(date,'%Y-%m-%dT%h:%i:%s') as date,hit,likes FROM board WHERE content LIKE '%${word}%'`
     // const prepare = [word]
-    const sql2 = `SELECT idx,subject,content,nickname FROM board WHERE subject LIKE '%${word}%'`
+
     let response = {
         errno:0
     }
 
     try{
         const [result] = await pool.execute(sql)
-                         await pool.execute(sql2)
-        // console.log(result)
-        response = {
-            ...response,
-            result
+        if (result.length === 0) {
+            const [result] = await pool.execute(sql2)
+            response = {
+                ...response,
+                result
+            }
+            console.log('sql2')
+            res.json(response)
+        } else {
+            response = {
+                ...response,
+                result
+            }
+            console.log('sql')
+            res.json(response)
         }
+
+        console.log(response)
+
     }catch(e){
         {
             console.log(e.message)
@@ -411,7 +427,6 @@ exports.search = async (req,res) => {
             }
         }
     }
-    res.json(response)
 }
 
 
