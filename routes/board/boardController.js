@@ -7,27 +7,42 @@ exports.list = async (req,res)=>{
     const sql = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' AND cate_name='${cate_name}' ORDER BY idx DESC`
     const sql2 = `SELECT count(idx) as total_record FROM board`
     const sql3 = `SELECT * FROM category`
+    const sql4 = `SELECT idx,cate_name,subject,nickname,DATE_FORMAT(date,'%Y-%m-%d') as date,hit,likes FROM board WHERE deleteFlag = 'y' ORDER BY idx DESC`
     let response = {
         errno:1
     }
-
+    console.log(cate_name)
     try{
-        const [result] = await pool.execute(sql)
-        const [result2] = await pool.execute(sql3)
-        const [[{total_record}]] = await pool.execute(sql2)
-        response = {
-            ...response,
-            total_record,
-            errno:0,
-            result,
-            result2
-        }
+        if (cate_name === 'undefined' || cate_name ==='전체'){
+        const [result] = await pool.execute(sql4)
+            const [result2] = await pool.execute(sql3)
+            const [[{total_record}]] = await pool.execute(sql2)
+            response = {
+                ...response,
+                total_record,
+                errno:0,
+                result,
+                result2
+            }
+        }else{
+            const [result] = await pool.execute(sql)
+            const [result2] = await pool.execute(sql3)
+            const [[{total_record}]] = await pool.execute(sql2)
+            response = {
+                ...response,
+                total_record,
+                errno:0,
+                result,
+                result2
+                
+            }
+        }res.json(response)
+        
         
     }catch(e){
         console.log(e.message)
     }
 
-    res.json(response)
 }
 exports.list_ranking = async (req,res)=>{
     const sql = `SELECT nickname,point from user order by point desc limit 5`
