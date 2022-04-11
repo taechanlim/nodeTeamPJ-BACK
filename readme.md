@@ -1,7 +1,7 @@
-!!
-깃허브 작동확인용
-!!21312
+## .env 파일생성
+<!-- DB_HOST = 'localhost'
+DB_USER = 'taechan'
+DB_PASSWORD = '9688'
+DB_DATABASE = 'teamPJ'
+SALT = 'teamPJ' -->
 
-github test ing
-
-## root에 uploads 폴더 생성
